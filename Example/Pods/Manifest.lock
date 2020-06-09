@@ -1,0 +1,16 @@
+PODS:
+  - AlgolyticsSDK (0.1.0)
+
+DEPENDENCIES:
+  - AlgolyticsSDK (from `../`)
+
+EXTERNAL SOURCES:
+  AlgolyticsSDK:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  AlgolyticsSDK: 2a6a0c656a3574407299a25f2579d53e912fa42c
+
+PODFILE CHECKSUM: 909fb56fa86ef37456664de3b88f9340c82538dd
+
+COCOAPODS: 1.8.4

@@ -1,0 +1,6 @@
+framework module AlgolyticsSDK {
+  umbrella header "AlgolyticsSDK-umbrella.h"
+
+  export *
+  module * { export * }
+}
