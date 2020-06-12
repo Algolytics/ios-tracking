@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import Reachability
+import Network
 
 struct Connectivity: Codable {
     var isConnected: Bool
@@ -15,16 +17,51 @@ struct Connectivity: Codable {
 
 public final class ConnectivityManager: BasicManagerType {
     var timer: Timer?
-    var data: Wifi?
+    var data: Connectivity?
+    let reachability = try! Reachability()
+//    let monitor = NWPathMonitor()
 
     public init() {
+        reachability.whenReachable = { [weak self] reachability in
+            if reachability.connection == .wifi {
+                print("Reachable via wifi")
+                self?.data = Connectivity(isConnected: true, isConnectedToWifi: true, isConnectedToCellular: false)
+            } else if reachability.connection == .cellular {
+                print("reachable cellular")
+                self?.data = Connectivity(isConnected: true, isConnectedToWifi: false, isConnectedToCellular: true)
+            } else {
+                print("unknown")
+                self?.data = Connectivity(isConnected: false, isConnectedToWifi: false, isConnectedToCellular: false)
+            }
+        }
+        reachability.whenUnreachable = { [weak self] _ in
+            print("Not reachable")
+            self?.data = Connectivity(isConnected: false, isConnectedToWifi: false, isConnectedToCellular: false)
+        }
+
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+
+//        monitor.pathUpdateHandler = { path in
+//            if path.usesInterfaceType(.cellular) {
+//                print("cellular!!")
+//            } else if path.usesInterfaceType(.wifi) {
+//                print("wifi!!")
+//            }
+//
+//            print(path.isExpensive)
+//        }
+//
+//        let queue = DispatchQueue.global(qos: .background)
+//        monitor.start(queue: queue)
     }
 
     @objc private func getData() {
-//        let reachability = Reachability()
-//        reachability.
-    }
 
+    }
 
     public func startGettingData() {
         timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(getData), userInfo: nil, repeats: true)

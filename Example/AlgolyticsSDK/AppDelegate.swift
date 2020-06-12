@@ -22,7 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                    ContactManager(),
                                                    LocationManager(),
                                                    PhotoManager(),
-                                                   WifiManager()
+                                                   WifiManager(),
+                                                   ConnectivityManager()
         ])
 
         return true

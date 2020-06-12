@@ -1,16 +1,23 @@
 PODS:
-  - AlgolyticsSDK (0.1.0)
+  - AlgolyticsSDK (0.1.0):
+    - ReachabilitySwift
+  - ReachabilitySwift (5.0.0)
 
 DEPENDENCIES:
   - AlgolyticsSDK (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - ReachabilitySwift
 
 EXTERNAL SOURCES:
   AlgolyticsSDK:
     :path: "../"
 
 SPEC CHECKSUMS:
-  AlgolyticsSDK: 2a6a0c656a3574407299a25f2579d53e912fa42c
+  AlgolyticsSDK: b23b0363e1a67990611c11f0eb0bd1205e1e957c
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
 
-PODFILE CHECKSUM: 909fb56fa86ef37456664de3b88f9340c82538dd
+PODFILE CHECKSUM: 1eb74158c6fd44a8a74a1ad54cda8b725a5dccb4
 
 COCOAPODS: 1.8.4

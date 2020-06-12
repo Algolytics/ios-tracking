@@ -1,5 +1,5 @@
 import XCTest
-import AlgolyticsSDK
+import AlgolyticsSDK_Example
 
 class Tests: XCTestCase {
     
