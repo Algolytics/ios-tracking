@@ -16,6 +16,13 @@
 		22884A59248A1DED00847621 /* InputEventsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22884A58248A1DED00847621 /* InputEventsManager.swift */; };
 		22884A5B248E3AC300847621 /* ScreenEventsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22884A5A248E3AC300847621 /* ScreenEventsManager.swift */; };
 		22B9AAF8FB578F381F845448364EDB53 /* AlgolyticsSDK-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AEFC3973AF41A84853F37AF34B7339DD /* AlgolyticsSDK-dummy.m */; };
+		22C051082493993F00251E95 /* PhotoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C051012493993D00251E95 /* PhotoManager.swift */; };
+		22C051092493993F00251E95 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C051022493993D00251E95 /* LocationManager.swift */; };
+		22C0510A2493993F00251E95 /* ConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C051032493993E00251E95 /* ConnectivityManager.swift */; };
+		22C0510B2493993F00251E95 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C051042493993E00251E95 /* CalendarManager.swift */; };
+		22C0510C2493993F00251E95 /* ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C051052493993E00251E95 /* ContactManager.swift */; };
+		22C0510D2493993F00251E95 /* AccelerometerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C051062493993F00251E95 /* AccelerometerManager.swift */; };
+		22C0510E2493993F00251E95 /* WifiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C051072493993F00251E95 /* WifiManager.swift */; };
 		2833EAA3C6BD8ADEFF66D67C5092CF19 /* Pods-AlgolyticsSDK_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DE565D95864F85B995BA18C217F76E2 /* Pods-AlgolyticsSDK_Tests-dummy.m */; };
 		34A90F8281FB0006A67B71E63B6F04C3 /* Pods-AlgolyticsSDK_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = BECCD1F4B4DCA65532761C5B3DB7169F /* Pods-AlgolyticsSDK_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		43D9043769F2EB1B3D202353FC741E62 /* Pods-AlgolyticsSDK_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1D0A5142497B6582D65E57B83A5115 /* Pods-AlgolyticsSDK_Example-dummy.m */; };
@@ -56,6 +63,13 @@
 		22884A562489032C00847621 /* AlgolyticsSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgolyticsSDK.swift; sourceTree = "<group>"; };
 		22884A58248A1DED00847621 /* InputEventsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEventsManager.swift; sourceTree = "<group>"; };
 		22884A5A248E3AC300847621 /* ScreenEventsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenEventsManager.swift; sourceTree = "<group>"; };
+		22C051012493993D00251E95 /* PhotoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoManager.swift; sourceTree = "<group>"; };
+		22C051022493993D00251E95 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		22C051032493993E00251E95 /* ConnectivityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectivityManager.swift; sourceTree = "<group>"; };
+		22C051042493993E00251E95 /* CalendarManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
+		22C051052493993E00251E95 /* ContactManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactManager.swift; sourceTree = "<group>"; };
+		22C051062493993F00251E95 /* AccelerometerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccelerometerManager.swift; sourceTree = "<group>"; };
+		22C051072493993F00251E95 /* WifiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WifiManager.swift; sourceTree = "<group>"; };
 		3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		33FF2AA9011C10955F08EA4EE2F07EAA /* Pods-AlgolyticsSDK_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-AlgolyticsSDK_Tests-umbrella.h"; sourceTree = "<group>"; };
 		39CFB87B01C7D4C2A8910BE81DD3246F /* Pods-AlgolyticsSDK_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AlgolyticsSDK_Example-Info.plist"; sourceTree = "<group>"; };
@@ -139,6 +153,13 @@
 			isa = PBXGroup;
 			children = (
 				22884A4F2488E12100847621 /* BatteryManager.swift */,
+				22C051062493993F00251E95 /* AccelerometerManager.swift */,
+				22C051042493993E00251E95 /* CalendarManager.swift */,
+				22C051032493993E00251E95 /* ConnectivityManager.swift */,
+				22C051052493993E00251E95 /* ContactManager.swift */,
+				22C051022493993D00251E95 /* LocationManager.swift */,
+				22C051012493993D00251E95 /* PhotoManager.swift */,
+				22C051072493993F00251E95 /* WifiManager.swift */,
 				22884A54248900B800847621 /* ClickEventsManager.swift */,
 				22884A58248A1DED00847621 /* InputEventsManager.swift */,
 				22884A5A248E3AC300847621 /* ScreenEventsManager.swift */,
@@ -407,12 +428,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22C0510C2493993F00251E95 /* ContactManager.swift in Sources */,
 				22B9AAF8FB578F381F845448364EDB53 /* AlgolyticsSDK-dummy.m in Sources */,
 				22884A572489032C00847621 /* AlgolyticsSDK.swift in Sources */,
+				22C051092493993F00251E95 /* LocationManager.swift in Sources */,
 				22884A502488E12100847621 /* BatteryManager.swift in Sources */,
+				22C0510D2493993F00251E95 /* AccelerometerManager.swift in Sources */,
+				22C051082493993F00251E95 /* PhotoManager.swift in Sources */,
 				22884A59248A1DED00847621 /* InputEventsManager.swift in Sources */,
+				22C0510A2493993F00251E95 /* ConnectivityManager.swift in Sources */,
 				22884A5B248E3AC300847621 /* ScreenEventsManager.swift in Sources */,
 				22884A55248900B800847621 /* ClickEventsManager.swift in Sources */,
+				22C0510B2493993F00251E95 /* CalendarManager.swift in Sources */,
+				22C0510E2493993F00251E95 /* WifiManager.swift in Sources */,
 				22884A4E2488E0D900847621 /* ManagerProtocol.swift in Sources */,
 				22884A532488F4F200847621 /* UIView+Subviews.swift in Sources */,
 			);
