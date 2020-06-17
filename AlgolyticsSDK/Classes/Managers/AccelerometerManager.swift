@@ -8,6 +8,11 @@
 import Foundation
 import CoreMotion
 
+struct AccelerometerData: Codable {
+    let eventType = "Accelerometer"
+    var value: [Accelerometer]
+}
+
 struct Accelerometer: Codable {
     var x: Double
     var y: Double
@@ -16,7 +21,8 @@ struct Accelerometer: Codable {
 
 public final class AccelerometerManager: BasicManagerType {
     var timer: Timer?
-    var data: [Accelerometer] = []
+    var sendDataTimer: Timer?
+    var data: AccelerometerData = AccelerometerData(value: [])
     let motionManager = CMMotionManager()
 
     public init() {
@@ -29,13 +35,31 @@ public final class AccelerometerManager: BasicManagerType {
 //        print("y: \(y)")
 //        print("z: \(z)")
         let accelerometer = Accelerometer(x: x, y: y, z: z)
-        data.append(accelerometer)
+        data.value.append(accelerometer)
     }
 
+    @objc private func sendData() {
+        let encoder = JSONEncoder()
+
+         do {
+             let jsonData = try encoder.encode(["Accelerometer" : data])
+
+             let str = String(decoding: jsonData, as: UTF8.self)
+             print(str)
+
+             AlgolyticsSDKService.shared.post(data: jsonData)
+         } catch {
+             print(error.localizedDescription)
+         }
+
+         data = AccelerometerData(value: [])
+    }
 
     public func startGettingData() {
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
         timer?.fire()
+
+        sendDataTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
     }
 
     public func stopGettingData() {

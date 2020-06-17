@@ -8,6 +8,11 @@
 import Foundation
 import CoreLocation
 
+struct LocationData: Codable {
+    let eventType = "Location"
+    let value: Location
+}
+
 struct Location: Codable {
     var latitude: Double
     var longitude: Double
@@ -15,7 +20,7 @@ struct Location: Codable {
 
 public final class LocationManager: NSObject, BasicManagerType {
     var timer: Timer?
-    var data: [Location] = []
+    var data: LocationData = LocationData(value: Location(latitude: 0.0, longitude: 0.0))
     let locationManager = CLLocationManager()
 
     public override init() {
@@ -31,21 +36,26 @@ public final class LocationManager: NSObject, BasicManagerType {
 
         guard let currentLocation = locationManager.location?.coordinate else { return }
         let location = Location(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
-        data.append(location)
+        data = LocationData(value: location)
         print("locations = \(location.latitude) \(location.longitude)")
+        sendData()
+    }
 
-//        let encoder = JSONEncoder()
-//
-//        do {
-//            let jsonData = try encoder.encode(bat)
-//
-//            if let jsonString = String(data: jsonData, encoding: .utf8) {
-//                print(jsonString)
-//            }
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-//        print(data.count)
+    private func sendData() {
+        let encoder = JSONEncoder()
+
+        do {
+            let jsonData = try encoder.encode(data)
+
+            let str = String(decoding: jsonData, as: UTF8.self)
+            print(str)
+
+            AlgolyticsSDKService.shared.post(data: jsonData)
+        } catch {
+            print(error.localizedDescription)
+        }
+
+        data = LocationData(value: Location(latitude: 0.0, longitude: 0.0))
     }
 
     public func startGettingData() {

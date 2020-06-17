@@ -14,7 +14,8 @@ public final class AlgolyticsSDK {
     private var inputEventsManager: InputEventsManager = InputEventsManager()
     private var screenEventsManager: ScreenEventsManager = ScreenEventsManager()
 
-    public func initWith(components: [BasicManagerType]) {
+    public func initWith(url: String, components: [BasicManagerType]) {
+        AlgolyticsSDKService.shared.baseURL = url
         self.components = components
         self.components.forEach { $0.startGettingData() }
     }

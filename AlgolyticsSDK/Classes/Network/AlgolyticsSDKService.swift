@@ -1,0 +1,70 @@
+//
+//  AlgolyticsSDKService.swift
+//  AlgolyticsSDK
+//
+//  Created by Mateusz Mirkowski on 17/06/2020.
+//
+
+import Foundation
+
+struct DeviceManager: Codable {
+    let name = UIDevice.current.name
+    let model = UIDevice.current.model
+}
+
+class AlgolyticsSDKService {
+    static let shared = AlgolyticsSDKService()
+    var baseURL: String = ""
+
+    func post(data: Data) {
+        print("post data")
+        var request = URLRequest(url: URL(string: baseURL)!)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        var data1 = data
+
+//        let encoder = JSONEncoder()
+//        do {
+//            let jsonData = try encoder.encode(DeviceManager())
+//
+//            let str = String(decoding: jsonData, as: UTF8.self)
+//            print(str)
+//            data1.append(jsonData)
+//
+////            AlgolyticsSDKService.shared.post(data: jsonData)
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+
+//        do {
+//            // make sure this JSON is in the format we expect
+//            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+//                // try to read out a string array
+//                print("uiiiii")
+//                print(json)
+//            }
+//        } catch let error as NSError {
+//            print("Failed to load: \(error.localizedDescription)")
+//        }
+
+
+        request.httpBody = data
+
+        let session = URLSession.shared
+        session.dataTask(with: request) { (data, response, error) in
+            if let response = response {
+//                print(response)
+            }
+            if let data = data {
+                do {
+//                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    print("poszlo ale super")
+//                    print(json)
+                } catch {
+                    print("cos nie bardzo")
+                    print(error)
+                }
+            }
+            }.resume()
+    }
+}

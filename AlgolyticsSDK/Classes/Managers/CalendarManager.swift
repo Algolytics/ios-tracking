@@ -12,21 +12,22 @@ struct Calendar: Codable {
     var title: String
     var dateStart: TimeInterval
     var dateEnd: TimeInterval
+
+//    enum CodingKeys: String, CodingKey {
+//        case title, dateStart, dateEnd
+//    }
 }
 
 public final class CalendarManager: BasicManagerType {
     var timer: Timer?
     var data: [Calendar] = []
-    let eventStore = EKEventStore()
+    var eventStore = EKEventStore()
 
     public init() {
-        stopGettingData()
-        eventStore.requestAccess(to: .event) { [weak self] (value, error) in
-            self?.startGettingData()
-        }
     }
 
     @objc private func getData() {
+        eventStore = EKEventStore()
         let calendars = eventStore.calendars(for: .event)
 
         var calendarEvents: [Calendar] = []
@@ -46,25 +47,42 @@ public final class CalendarManager: BasicManagerType {
 
         print("all calendar events")
         print(calendarEvents)
-//        let photo = Photo(count: result.count)
 
-//        let encoder = JSONEncoder()
-//
-//        do {
-//            let jsonData = try encoder.encode(bat)
-//
-//            if let jsonString = String(data: jsonData, encoding: .utf8) {
-//                print(jsonString)
-//            }
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-//        print(data.count)
+        data = calendarEvents
+
+        sendData()
+    }
+
+    private func sendData() {
+        let encoder = JSONEncoder()
+
+        do {
+            let jsonData = try encoder.encode(["EventList" : data])
+
+            let str = String(decoding: jsonData, as: UTF8.self)
+            print(str)
+
+            AlgolyticsSDKService.shared.post(data: jsonData)
+        } catch {
+            print(error.localizedDescription)
+        }
+
+        data = []
     }
 
     public func startGettingData() {
-        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
-        timer?.fire()
+//        stopGettingData()
+        eventStore.requestAccess(to: .event) { [weak self] (value, error) in
+//            self?.startGettingData()
+            DispatchQueue.main.async { [weak self] in
+                guard let strongSelf = self else { return }
+                strongSelf.timer = Timer.scheduledTimer(timeInterval: 5, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
+                strongSelf.timer?.fire()
+            }
+        }
+
+//        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
+//        timer?.fire()
     }
 
     public func stopGettingData() {

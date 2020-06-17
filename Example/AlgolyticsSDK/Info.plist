@@ -35,5 +35,14 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 	</array>
+    <key>NSCalendarsUsageDescription</key>
+    <string>NSCalendarsUsageDescription</string>
+    <key>NSContactsUsageDescription</key>
+    <string>NSContactsUsageDescription</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>NSLocationWhenInUseUsageDescription</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>NSPhotoLibraryUsageDescription</string>
+
 </dict>
 </plist>
