@@ -10,15 +10,16 @@ import Contacts
 
 struct Contact: Codable {
     let eventType = "CONTACT_NUMBER"
-    let time = Date()
-    var value: Int
+//    let time = Date()
+    var value: [Int]
     let deviceInfo = DeviceManager()
 }
 
 @available(iOS 9.0, *)
 public final class ContactManager: BasicManagerType {
     var timer: Timer?
-    var data: [Contact] = []
+    var sendDataTimer: Timer?
+    var data: Contact = Contact(value: [])
     let contactStore = CNContactStore()
 
     public init() { }
@@ -37,17 +38,17 @@ public final class ContactManager: BasicManagerType {
         print("contact count")
         print(contactsCount)
 
-        data.append(Contact(value: contactsCount))
+        data.value.append(contactsCount)
 
-        sendData()
+//        sendData()
     }
 
-    private func sendData() {
+    @objc private func sendData() {
         let encoder = JSONEncoder()
 
-        data.forEach {
+//        data.forEach {
             do {
-                let jsonData = try encoder.encode($0)
+                let jsonData = try encoder.encode(data)
 
                 let str = String(decoding: jsonData, as: UTF8.self)
                 print(str)
@@ -56,10 +57,10 @@ public final class ContactManager: BasicManagerType {
             } catch {
                 print(error.localizedDescription)
             }
-        }
+//        }
 
 
-        data = []
+        data = Contact(value: [])
     }
 
     public func startGettingData() {
@@ -69,6 +70,8 @@ public final class ContactManager: BasicManagerType {
                     guard let strongSelf = self else { return }
                     strongSelf.timer = Timer.scheduledTimer(timeInterval: 5, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
                     strongSelf.timer?.fire()
+
+                    strongSelf.sendDataTimer = Timer.scheduledTimer(timeInterval: 5, target: strongSelf, selector: #selector(strongSelf.sendData), userInfo: nil, repeats: true)
                 }
             }
         }
@@ -80,5 +83,8 @@ public final class ContactManager: BasicManagerType {
     public func stopGettingData() {
         timer?.invalidate()
         timer = nil
+
+        sendDataTimer?.invalidate()
+        sendDataTimer = nil
     }
 }

@@ -9,7 +9,8 @@ import UIKit
 
 struct BatteryData: Codable {
     let eventType = "Battery"
-    let batteryInfo: Battery
+    var batteryInfo: [Battery]
+    let deviceInfo = DeviceManager()
 }
 
 struct Battery: Codable {
@@ -38,22 +39,20 @@ struct Battery: Codable {
 
 public final class BatteryManager: BasicManagerType {
     var timer: Timer?
-    var data: BatteryData = BatteryData(batteryInfo: Battery(batteryLevel: -1, isAcCharging: false))
+    var sendDataTimer: Timer?
+    var data: BatteryData = BatteryData(batteryInfo: [])
 
     public init() {
 //        startGettingData()
     }
 
     @objc private func getData() {
-        let battery = Battery(batteryLevel: UIDevice.current.batteryLevel, isAcCharging: UIDevice.current.batteryState.rawValue == 2)
-        data = BatteryData(batteryInfo: battery)
-
-//        print(data.count)
-
-        sendData()
+        let battery = Battery(batteryLevel: UIDevice.current.batteryLevel * 100, isAcCharging: UIDevice.current.batteryState.rawValue == 2)
+        
+        data.batteryInfo.append(battery)
     }
 
-    private func sendData() {
+    @objc private func sendData() {
         let encoder = JSONEncoder()
 
 //        data.forEach {
@@ -70,16 +69,23 @@ public final class BatteryManager: BasicManagerType {
             }
 //        }
 
-        data = BatteryData(batteryInfo: Battery(batteryLevel: -1, isAcCharging: false))
+        data = BatteryData(batteryInfo: [])
     }
 
     public func startGettingData() {
-        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
+        UIDevice.current.isBatteryMonitoringEnabled = true
+
+        timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
         timer?.fire()
+
+        sendDataTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
     }
 
     public func stopGettingData() {
         timer?.invalidate()
         timer = nil
+
+        sendDataTimer?.invalidate()
+        sendDataTimer = nil
     }
 }

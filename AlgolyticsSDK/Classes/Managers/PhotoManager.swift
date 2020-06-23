@@ -10,16 +10,14 @@ import Photos
 
 struct PhotoData: Codable {
     let eventType = "Photo"
-    var photo: Photo
-}
-
-struct Photo: Codable {
-    var count: Int
+    var value: [Int]
+    let deviceInfo = DeviceManager()
 }
 
 public final class PhotoManager: BasicManagerType {
     var timer: Timer?
-    var data: PhotoData = PhotoData(photo: Photo(count: 0))
+    var sendTimer: Timer?
+    var data: PhotoData = PhotoData(value: [])
 
     public init() { }
 
@@ -28,12 +26,10 @@ public final class PhotoManager: BasicManagerType {
         print("image count")
         print(result.count)
 
-        data = PhotoData(photo: Photo(count: result.count))
-
-        sendData()
+        data.value.append(result.count)
     }
 
-    private func sendData() {
+    @objc private func sendData() {
         let encoder = JSONEncoder()
 
         do {
@@ -47,7 +43,7 @@ public final class PhotoManager: BasicManagerType {
             print(error.localizedDescription)
         }
 
-        data = PhotoData(photo: Photo(count: 0))
+        data = PhotoData(value: [])
     }
 
     public func startGettingData() {
@@ -56,6 +52,8 @@ public final class PhotoManager: BasicManagerType {
                 guard let strongSelf = self else { return }
                 strongSelf.timer = Timer.scheduledTimer(timeInterval: 5, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
                 strongSelf.timer?.fire()
+
+                strongSelf.sendTimer = Timer.scheduledTimer(timeInterval: 5, target: strongSelf, selector: #selector(strongSelf.sendData), userInfo: nil, repeats: true)
             }
         }
     }
@@ -63,5 +61,8 @@ public final class PhotoManager: BasicManagerType {
     public func stopGettingData() {
         timer?.invalidate()
         timer = nil
+
+        sendTimer?.invalidate()
+        sendTimer = nil
     }
 }

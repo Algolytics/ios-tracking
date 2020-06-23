@@ -10,7 +10,8 @@ import CoreLocation
 
 struct LocationData: Codable {
     let eventType = "Location"
-    let value: Location
+    var value: [Location]
+    let deviceInfo = DeviceManager()
 }
 
 struct Location: Codable {
@@ -20,7 +21,8 @@ struct Location: Codable {
 
 public final class LocationManager: NSObject, BasicManagerType {
     var timer: Timer?
-    var data: LocationData = LocationData(value: Location(latitude: 0.0, longitude: 0.0))
+    var sendTimer: Timer?
+    var data: LocationData = LocationData(value: [])
     let locationManager = CLLocationManager()
 
     public override init() {
@@ -36,12 +38,12 @@ public final class LocationManager: NSObject, BasicManagerType {
 
         guard let currentLocation = locationManager.location?.coordinate else { return }
         let location = Location(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
-        data = LocationData(value: location)
+        data.value.append(location)
         print("locations = \(location.latitude) \(location.longitude)")
-        sendData()
+//        sendData()
     }
 
-    private func sendData() {
+    @objc private func sendData() {
         let encoder = JSONEncoder()
 
         do {
@@ -55,12 +57,14 @@ public final class LocationManager: NSObject, BasicManagerType {
             print(error.localizedDescription)
         }
 
-        data = LocationData(value: Location(latitude: 0.0, longitude: 0.0))
+        data = LocationData(value: [])
     }
 
     public func startGettingData() {
-        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
         timer?.fire()
+
+        sendTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
     }
 
     public func stopGettingData() {
@@ -72,7 +76,7 @@ public final class LocationManager: NSObject, BasicManagerType {
 extension LocationManager: CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 
-        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+//        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
 //        let location = Location(latitude: locValue.latitude, longitude: locValue.longitude)
 
     }

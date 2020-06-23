@@ -8,6 +8,12 @@
 import Foundation
 import EventKit
 
+struct CalendarData: Codable {
+    let eventType = "Calendar"
+    var calendarInfo: [[Calendar]]
+    let deviceInfo = DeviceManager()
+}
+
 struct Calendar: Codable {
     var title: String
     var dateStart: TimeInterval
@@ -20,7 +26,8 @@ struct Calendar: Codable {
 
 public final class CalendarManager: BasicManagerType {
     var timer: Timer?
-    var data: [Calendar] = []
+    var sendDataTimer: Timer?
+    var data: CalendarData = CalendarData(calendarInfo: [])
     var eventStore = EKEventStore()
 
     public init() {
@@ -48,12 +55,10 @@ public final class CalendarManager: BasicManagerType {
         print("all calendar events")
         print(calendarEvents)
 
-        data = calendarEvents
-
-        sendData()
+        data.calendarInfo.append(calendarEvents)
     }
 
-    private func sendData() {
+    @objc private func sendData() {
         let encoder = JSONEncoder()
 
         do {
@@ -67,7 +72,7 @@ public final class CalendarManager: BasicManagerType {
             print(error.localizedDescription)
         }
 
-        data = []
+        data = CalendarData(calendarInfo: [])
     }
 
     public func startGettingData() {
@@ -76,17 +81,19 @@ public final class CalendarManager: BasicManagerType {
 //            self?.startGettingData()
             DispatchQueue.main.async { [weak self] in
                 guard let strongSelf = self else { return }
-                strongSelf.timer = Timer.scheduledTimer(timeInterval: 5, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
+                strongSelf.timer = Timer.scheduledTimer(timeInterval: 1, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
                 strongSelf.timer?.fire()
+
+                strongSelf.sendDataTimer = Timer.scheduledTimer(timeInterval: 5, target: strongSelf, selector: #selector(strongSelf.sendData), userInfo: nil, repeats: true)
             }
         }
-
-//        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
-//        timer?.fire()
     }
 
     public func stopGettingData() {
         timer?.invalidate()
         timer = nil
+
+        sendDataTimer?.invalidate()
+        sendDataTimer = nil
     }
 }

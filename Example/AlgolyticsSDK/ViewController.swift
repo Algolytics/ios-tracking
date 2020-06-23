@@ -35,9 +35,7 @@ class ViewController: UIViewController {
 //        textField.inputAccessoryView = toolbar
 //        textField.inputView = datePicker
 
-
         AlgolyticsSDK.shared.sendScreenName(name: "dada")
-
 
         textView.delegate = self
     }

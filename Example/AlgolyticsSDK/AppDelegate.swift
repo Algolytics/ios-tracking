@@ -23,8 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                                                   CalendarManager(),
 //                                                   ContactManager(),
 //                                                   LocationManager(),
-                                                   PhotoManager(),
-//                                                   WifiManager(),
+//                                                   PhotoManager(),
+                                                   WifiManager(),
 //                                                   ConnectivityManager()
         ])
 

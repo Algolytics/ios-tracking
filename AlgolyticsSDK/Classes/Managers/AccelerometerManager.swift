@@ -10,6 +10,7 @@ import CoreMotion
 
 struct AccelerometerData: Codable {
     let eventType = "Accelerometer"
+    let deviceInfo = DeviceManager()
     var value: [Accelerometer]
 }
 
@@ -42,7 +43,7 @@ public final class AccelerometerManager: BasicManagerType {
         let encoder = JSONEncoder()
 
          do {
-             let jsonData = try encoder.encode(["Accelerometer" : data])
+             let jsonData = try encoder.encode(data)
 
              let str = String(decoding: jsonData, as: UTF8.self)
              print(str)
@@ -65,5 +66,8 @@ public final class AccelerometerManager: BasicManagerType {
     public func stopGettingData() {
         timer?.invalidate()
         timer = nil
+
+        sendDataTimer?.invalidate()
+        sendDataTimer = nil
     }
 }
