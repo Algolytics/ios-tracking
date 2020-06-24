@@ -19,15 +19,25 @@ struct Location: Codable {
     var longitude: Double
 }
 
-public final class LocationManager: NSObject, BasicManagerType {
+final class LocationManager: NSObject, BasicManagerType {
+    var gettingPoolingTime: Double
+    var sendingPoolingTime: Double
     var timer: Timer?
     var sendTimer: Timer?
     var data: LocationData = LocationData(value: [])
     let locationManager = CLLocationManager()
 
-    public override init() {
+//    public override init() {
+//
+//    }
+
+    init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
+        self.gettingPoolingTime = gettingPoolingTime / 1000
+        self.sendingPoolingTime = sendingPoolingTime / 1000
+
         self.locationManager.requestWhenInUseAuthorization()
     }
+    
 
     @objc private func getData() {
         if CLLocationManager.locationServicesEnabled() {
@@ -40,7 +50,6 @@ public final class LocationManager: NSObject, BasicManagerType {
         let location = Location(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
         data.value.append(location)
         print("locations = \(location.latitude) \(location.longitude)")
-//        sendData()
     }
 
     @objc private func sendData() {
@@ -61,10 +70,10 @@ public final class LocationManager: NSObject, BasicManagerType {
     }
 
     public func startGettingData() {
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: gettingPoolingTime, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
         timer?.fire()
 
-        sendTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
+        sendTimer = Timer.scheduledTimer(timeInterval: sendingPoolingTime, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
     }
 
     public func stopGettingData() {

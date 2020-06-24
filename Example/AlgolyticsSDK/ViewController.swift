@@ -38,6 +38,10 @@ class ViewController: UIViewController {
         AlgolyticsSDK.shared.sendScreenName(name: "dada")
 
         textView.delegate = self
+
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//            self.view.endEditing(true)
+//        }
     }
 
     @objc func donedatePicker() {

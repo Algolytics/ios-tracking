@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ClickEventsManager: BasicAspectType {
+class ClickEventsManager: BasicAspectType {
     func startGettingClickEvents(for view: UIView) {
         let buttons = view.get(all: UIButton.self)
         buttons.forEach { $0.addTarget(self, action: #selector(getIdentifier(_:)), for: .touchUpOutside)}

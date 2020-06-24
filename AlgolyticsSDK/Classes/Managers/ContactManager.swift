@@ -15,14 +15,18 @@ struct Contact: Codable {
     let deviceInfo = DeviceManager()
 }
 
-@available(iOS 9.0, *)
-public final class ContactManager: BasicManagerType {
+final class ContactManager: BasicManagerType {
+    var gettingPoolingTime: Double
+    var sendingPoolingTime: Double
     var timer: Timer?
     var sendDataTimer: Timer?
     var data: Contact = Contact(value: [])
     let contactStore = CNContactStore()
 
-    public init() { }
+    init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
+        self.gettingPoolingTime = gettingPoolingTime / 1000
+        self.sendingPoolingTime = sendingPoolingTime / 1000
+    }
 
     @objc private func getData() {
         var contactsCount: Int = 0
@@ -68,10 +72,10 @@ public final class ContactManager: BasicManagerType {
             self?.contactStore.requestAccess(for: .contacts) {(value, error) in
                 DispatchQueue.main.async { [weak self] in
                     guard let strongSelf = self else { return }
-                    strongSelf.timer = Timer.scheduledTimer(timeInterval: 5, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
+                    strongSelf.timer = Timer.scheduledTimer(timeInterval: strongSelf.gettingPoolingTime, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
                     strongSelf.timer?.fire()
 
-                    strongSelf.sendDataTimer = Timer.scheduledTimer(timeInterval: 5, target: strongSelf, selector: #selector(strongSelf.sendData), userInfo: nil, repeats: true)
+                    strongSelf.sendDataTimer = Timer.scheduledTimer(timeInterval: strongSelf.sendingPoolingTime, target: strongSelf, selector: #selector(strongSelf.sendData), userInfo: nil, repeats: true)
                 }
             }
         }

@@ -18,12 +18,16 @@ struct Wifi: Codable {
     var name: String
 }
 
-public final class WifiManager: BasicManagerType {
+final class WifiManager: BasicManagerType {
+    var gettingPoolingTime: Double
+    var sendingPoolingTime: Double
     var timer: Timer?
     var sendTimer: Timer?
     var data: WifiData = WifiData(value: [])
 
-    public init() {
+    init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
+        self.gettingPoolingTime = gettingPoolingTime / 1000
+        self.sendingPoolingTime = sendingPoolingTime / 1000
     }
 
     @objc private func getData() {
@@ -59,10 +63,10 @@ public final class WifiManager: BasicManagerType {
     }
 
     public func startGettingData() {
-        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: gettingPoolingTime, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
         timer?.fire()
 
-        sendTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
+        sendTimer = Timer.scheduledTimer(timeInterval: sendingPoolingTime, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
     }
 
     public func stopGettingData() {

@@ -14,12 +14,17 @@ struct PhotoData: Codable {
     let deviceInfo = DeviceManager()
 }
 
-public final class PhotoManager: BasicManagerType {
+final class PhotoManager: BasicManagerType {
+    var gettingPoolingTime: Double
+    var sendingPoolingTime: Double
     var timer: Timer?
     var sendTimer: Timer?
     var data: PhotoData = PhotoData(value: [])
 
-    public init() { }
+    init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
+        self.gettingPoolingTime = gettingPoolingTime / 1000
+        self.sendingPoolingTime = sendingPoolingTime / 1000
+    }
 
     @objc private func getData() {
         let result = PHAsset.fetchAssets(with: .image, options: nil)
@@ -50,10 +55,10 @@ public final class PhotoManager: BasicManagerType {
         PHPhotoLibrary.requestAuthorization { (status) in
             DispatchQueue.main.async { [weak self] in
                 guard let strongSelf = self else { return }
-                strongSelf.timer = Timer.scheduledTimer(timeInterval: 5, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
+                strongSelf.timer = Timer.scheduledTimer(timeInterval: strongSelf.gettingPoolingTime, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
                 strongSelf.timer?.fire()
 
-                strongSelf.sendTimer = Timer.scheduledTimer(timeInterval: 5, target: strongSelf, selector: #selector(strongSelf.sendData), userInfo: nil, repeats: true)
+                strongSelf.sendTimer = Timer.scheduledTimer(timeInterval: strongSelf.sendingPoolingTime, target: strongSelf, selector: #selector(strongSelf.sendData), userInfo: nil, repeats: true)
             }
         }
     }

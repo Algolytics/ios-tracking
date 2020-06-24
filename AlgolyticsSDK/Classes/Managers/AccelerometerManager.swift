@@ -20,13 +20,17 @@ struct Accelerometer: Codable {
     var z: Double
 }
 
-public final class AccelerometerManager: BasicManagerType {
+final class AccelerometerManager: BasicManagerType {
+    var gettingPoolingTime: Double
+    var sendingPoolingTime: Double
     var timer: Timer?
     var sendDataTimer: Timer?
     var data: AccelerometerData = AccelerometerData(value: [])
     let motionManager = CMMotionManager()
 
-    public init() {
+    public init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
+        self.gettingPoolingTime = gettingPoolingTime / 1000
+        self.sendingPoolingTime = sendingPoolingTime / 1000
         motionManager.startAccelerometerUpdates()
     }
 
@@ -57,10 +61,10 @@ public final class AccelerometerManager: BasicManagerType {
     }
 
     public func startGettingData() {
-        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: gettingPoolingTime, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
         timer?.fire()
 
-        sendDataTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
+        sendDataTimer = Timer.scheduledTimer(timeInterval: sendingPoolingTime, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
     }
 
     public func stopGettingData() {

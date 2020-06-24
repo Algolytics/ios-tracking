@@ -37,13 +37,16 @@ struct Battery: Codable {
 //    }
 //}
 
-public final class BatteryManager: BasicManagerType {
+final class BatteryManager: BasicManagerType {
+    var gettingPoolingTime: Double
+    var sendingPoolingTime: Double
     var timer: Timer?
     var sendDataTimer: Timer?
     var data: BatteryData = BatteryData(batteryInfo: [])
 
-    public init() {
-//        startGettingData()
+    init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
+        self.gettingPoolingTime = gettingPoolingTime / 1000
+        self.sendingPoolingTime = sendingPoolingTime / 1000
     }
 
     @objc private func getData() {
@@ -75,10 +78,10 @@ public final class BatteryManager: BasicManagerType {
     public func startGettingData() {
         UIDevice.current.isBatteryMonitoringEnabled = true
 
-        timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: gettingPoolingTime, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
         timer?.fire()
 
-        sendDataTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
+        sendDataTimer = Timer.scheduledTimer(timeInterval: sendingPoolingTime, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
     }
 
     public func stopGettingData() {

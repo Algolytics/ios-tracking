@@ -7,13 +7,15 @@
 
 import Foundation
 
-public protocol BasicManagerType {
-    init()
+protocol BasicManagerType {
+    init(gettingPoolingTime: Double, sendingPoolingTime: Double)
 //    var timer: Timer! { get }
+    var gettingPoolingTime: Double { get }
+    var sendingPoolingTime: Double { get }
     func startGettingData()
     func stopGettingData()
 }
 
-public protocol BasicAspectType {
+protocol BasicAspectType {
     
 }

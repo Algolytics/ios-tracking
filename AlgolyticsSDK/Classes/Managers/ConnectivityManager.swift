@@ -21,14 +21,19 @@ struct Connectivity: Codable {
     var isConnectedToCellular: Bool
 }
 
-public final class ConnectivityManager: BasicManagerType {
+final class ConnectivityManager: BasicManagerType {
+    var gettingPoolingTime: Double
+    var sendingPoolingTime: Double
     var timer: Timer?
     var sendTimer: Timer?
     var data: ConnectivityData = ConnectivityData(connectivityInfo: [])
     let reachability = try! Reachability()
 //    let monitor = NWPathMonitor()
 
-    public init() {
+    init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
+        self.gettingPoolingTime = gettingPoolingTime / 1000
+        self.sendingPoolingTime = sendingPoolingTime / 1000
+
         reachability.whenReachable = { [weak self] reachability in
             if reachability.connection == .wifi {
                 print("Reachable via wifi")
@@ -91,7 +96,7 @@ public final class ConnectivityManager: BasicManagerType {
     public func startGettingData() {
 //        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
 //        timer?.fire()
-        sendTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
+        sendTimer = Timer.scheduledTimer(timeInterval: sendingPoolingTime, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
     }
 
     public func stopGettingData() {

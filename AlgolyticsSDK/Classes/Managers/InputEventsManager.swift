@@ -7,12 +7,14 @@
 
 import Foundation
 
-final class InputEventsManager: BasicAspectType {
+class InputEventsManager: BasicAspectType {
     private var timer: Timer?
 
     func startGettingInputEvents(for view: UIView) {
         let allTextFields = view.get(all: UITextField.self)
+        allTextFields.forEach { $0.addTarget(self, action: #selector(validate2), for: .editingDidBegin)}
         allTextFields.forEach { $0.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)}
+        allTextFields.forEach { $0.addTarget(self, action: #selector(validate2), for: .editingDidEnd)}
     }
 
     @objc private func textFieldDidChange(_ sender: UITextField) {
@@ -25,6 +27,12 @@ final class InputEventsManager: BasicAspectType {
         let string = timer?.userInfo as! String
         print("validate 1")
         print(string)
+    }
+
+    @objc private func validate2() {
+//        let string = timer?.userInfo as! String
+        print("validate 2")
+//        print(string)
     }
 
     func textViewBeginEditing(_ sender: UITextView) {

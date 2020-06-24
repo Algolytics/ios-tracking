@@ -24,13 +24,17 @@ struct Calendar: Codable {
 //    }
 }
 
-public final class CalendarManager: BasicManagerType {
+final class CalendarManager: BasicManagerType {
+    var gettingPoolingTime: Double
+    var sendingPoolingTime: Double
     var timer: Timer?
     var sendDataTimer: Timer?
     var data: CalendarData = CalendarData(calendarInfo: [])
     var eventStore = EKEventStore()
 
-    public init() {
+    init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
+        self.gettingPoolingTime = gettingPoolingTime / 1000
+        self.sendingPoolingTime = sendingPoolingTime / 1000
     }
 
     @objc private func getData() {
@@ -81,10 +85,10 @@ public final class CalendarManager: BasicManagerType {
 //            self?.startGettingData()
             DispatchQueue.main.async { [weak self] in
                 guard let strongSelf = self else { return }
-                strongSelf.timer = Timer.scheduledTimer(timeInterval: 1, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
+                strongSelf.timer = Timer.scheduledTimer(timeInterval: strongSelf.gettingPoolingTime, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
                 strongSelf.timer?.fire()
 
-                strongSelf.sendDataTimer = Timer.scheduledTimer(timeInterval: 5, target: strongSelf, selector: #selector(strongSelf.sendData), userInfo: nil, repeats: true)
+                strongSelf.sendDataTimer = Timer.scheduledTimer(timeInterval: strongSelf.sendingPoolingTime, target: strongSelf, selector: #selector(strongSelf.sendData), userInfo: nil, repeats: true)
             }
         }
     }
