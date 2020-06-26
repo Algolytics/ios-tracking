@@ -12,6 +12,7 @@ struct AccelerometerData: Codable {
     let eventType = "Accelerometer"
     let deviceInfo = DeviceManager()
     var value: [Accelerometer]
+    let date = DateManager.shared.currentDate
 }
 
 struct Accelerometer: Codable {

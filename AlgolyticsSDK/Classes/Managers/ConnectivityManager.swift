@@ -13,6 +13,7 @@ struct ConnectivityData: Codable {
     let eventType = "Connectivity"
     var connectivityInfo: [Connectivity]
     let deviceInfo = DeviceManager()
+    let date = DateManager.shared.currentDate
 }
 
 struct Connectivity: Codable {

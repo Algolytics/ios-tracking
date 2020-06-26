@@ -9,12 +9,14 @@ import Foundation
 
 class InputEventsManager: BasicAspectType {
     private var timer: Timer?
+    private var dwellStartTimestamp: TimeInterval!
+    private var flightStartTimestamp: TimeInterval!
 
     func startGettingInputEvents(for view: UIView) {
         let allTextFields = view.get(all: UITextField.self)
-        allTextFields.forEach { $0.addTarget(self, action: #selector(validate2), for: .editingDidBegin)}
+        allTextFields.forEach { $0.addTarget(self, action: #selector(editingStart), for: .editingDidBegin)}
         allTextFields.forEach { $0.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)}
-        allTextFields.forEach { $0.addTarget(self, action: #selector(validate2), for: .editingDidEnd)}
+        allTextFields.forEach { $0.addTarget(self, action: #selector(editingEnd), for: .editingDidEnd)}
     }
 
     @objc private func textFieldDidChange(_ sender: UITextField) {
@@ -29,20 +31,49 @@ class InputEventsManager: BasicAspectType {
         print(string)
     }
 
-    @objc private func validate2() {
+    @objc private func editingStart() {
+        dwellStartTimestamp = NSDate().timeIntervalSince1970
 //        let string = timer?.userInfo as! String
-        print("validate 2")
+        print("editing start")
 //        print(string)
+        if flightStartTimestamp != nil {
+            print("flighttime")
+            let flightTimestamp = dwellStartTimestamp - flightStartTimestamp
+            print(flightTimestamp)
+        }
+    }
+
+    @objc private func editingEnd() {
+    //        let string = timer?.userInfo as! String
+            print("editing end")
+    //        print(string)
+        let editingEndTimestamp = NSDate().timeIntervalSince1970
+        let dwellTimestamp = editingEndTimestamp - dwellStartTimestamp
+        print(dwellTimestamp)
+        flightStartTimestamp = editingEndTimestamp
     }
 
     func textViewBeginEditing(_ sender: UITextView) {
         print("textViewBeginEditing")
         print(sender.text ?? "")
+        dwellStartTimestamp = NSDate().timeIntervalSince1970
+//        let string = timer?.userInfo as! String
+
+//        print(string)
+        if flightStartTimestamp != nil {
+            print("flighttime")
+            let flightTimestamp = dwellStartTimestamp - flightStartTimestamp
+            print(flightTimestamp)
+        }
     }
 
     func textViewEndEditing(_ sender: UITextView) {
         print("textViewEndEditing")
         print(sender.text ?? "")
+        let editingEndTimestamp = NSDate().timeIntervalSince1970
+        let dwellTimestamp = editingEndTimestamp - dwellStartTimestamp
+        print(dwellTimestamp)
+        flightStartTimestamp = editingEndTimestamp
     }
 
     func textViewDidChange(_ sender: UITextView) {

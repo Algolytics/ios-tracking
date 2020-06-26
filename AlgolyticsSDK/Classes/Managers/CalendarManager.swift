@@ -12,6 +12,7 @@ struct CalendarData: Codable {
     let eventType = "Calendar"
     var calendarInfo: [[Calendar]]
     let deviceInfo = DeviceManager()
+    let date = DateManager.shared.currentDate
 }
 
 struct Calendar: Codable {

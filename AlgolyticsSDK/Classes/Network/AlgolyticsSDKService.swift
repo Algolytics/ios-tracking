@@ -12,6 +12,23 @@ struct DeviceManager: Codable {
     let model = UIDevice.current.model
 }
 
+class DateManager {
+    static let shared = DateManager()
+    var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        print("init formater")
+        return formatter
+    }()
+
+    lazy var currentDate: String = {
+        let now = Date()
+        let dateString = dateFormatter.string(from:now)
+        NSLog("%@", dateString)
+        return dateString
+    }()
+}
+
 class AlgolyticsSDKService {
     static let shared = AlgolyticsSDKService()
     var baseURL: String = ""

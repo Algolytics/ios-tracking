@@ -11,6 +11,7 @@ struct BatteryData: Codable {
     let eventType = "Battery"
     var batteryInfo: [Battery]
     let deviceInfo = DeviceManager()
+    let date = DateManager.shared.currentDate
 }
 
 struct Battery: Codable {

@@ -12,6 +12,7 @@ struct WifiData: Codable {
     let eventType = "Wifi"
     var value: [Wifi]
     let deviceInfo = DeviceManager()
+    let date = DateManager.shared.currentDate
 }
 
 struct Wifi: Codable {

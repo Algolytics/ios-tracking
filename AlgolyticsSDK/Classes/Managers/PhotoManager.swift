@@ -12,6 +12,7 @@ struct PhotoData: Codable {
     let eventType = "Photo"
     var value: [Int]
     let deviceInfo = DeviceManager()
+    let date = DateManager.shared.currentDate
 }
 
 final class PhotoManager: BasicManagerType {

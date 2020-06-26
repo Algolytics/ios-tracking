@@ -39,9 +39,12 @@ class ViewController: UIViewController {
 
         textView.delegate = self
 
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//            self.view.endEditing(true)
-//        }
+        let tapGestureReconizer = UITapGestureRecognizer(target: self, action: #selector(tap(sender:)))
+        view.addGestureRecognizer(tapGestureReconizer)
+    }
+
+    @objc func tap(sender: UITapGestureRecognizer) {
+        view.endEditing(true)
     }
 
     @objc func donedatePicker() {

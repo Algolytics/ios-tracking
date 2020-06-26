@@ -13,6 +13,7 @@ struct Contact: Codable {
 //    let time = Date()
     var value: [Int]
     let deviceInfo = DeviceManager()
+    let date = DateManager.shared.currentDate
 }
 
 final class ContactManager: BasicManagerType {

@@ -12,6 +12,7 @@ struct LocationData: Codable {
     let eventType = "Location"
     var value: [Location]
     let deviceInfo = DeviceManager()
+    let date = DateManager.shared.currentDate
 }
 
 struct Location: Codable {
