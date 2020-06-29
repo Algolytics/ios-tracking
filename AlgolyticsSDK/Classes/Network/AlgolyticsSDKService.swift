@@ -10,6 +10,10 @@ import Foundation
 struct DeviceManager: Codable {
     let name = UIDevice.current.name
     let model = UIDevice.current.model
+    let systemName = UIDevice.current.systemName
+    let systemVersion = UIDevice.current.systemVersion
+    let deviceId = UIDevice.current.identifierForVendor
+    let osLanguage = Locale.current.identifier
 }
 
 class DateManager {
