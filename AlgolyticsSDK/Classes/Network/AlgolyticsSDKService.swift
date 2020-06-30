@@ -21,14 +21,12 @@ class DateManager {
     var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-        print("init formater")
         return formatter
     }()
 
     lazy var currentDate: String = {
         let now = Date()
         let dateString = dateFormatter.string(from:now)
-        NSLog("%@", dateString)
         return dateString
     }()
 }
@@ -36,12 +34,14 @@ class DateManager {
 class AlgolyticsSDKService {
     static let shared = AlgolyticsSDKService()
     var baseURL: String = ""
+    var apiKey: String = ""
 
     func post(data: Data) {
         print("post data")
         var request = URLRequest(url: URL(string: baseURL)!)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(apiKey, forHTTPHeaderField: "Api-Key")
 //        var data1 = data
 
 //        let encoder = JSONEncoder()
@@ -72,20 +72,7 @@ class AlgolyticsSDKService {
         request.httpBody = data
 
         let session = URLSession.shared
-        session.dataTask(with: request) { (data, response, error) in
-            if let response = response {
-//                print(response)
-            }
-            if let data = data {
-                do {
-//                    let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    print("poszlo ale super")
-//                    print(json)
-                } catch {
-                    print("cos nie bardzo")
-                    print(error)
-                }
-            }
+        session.dataTask(with: request) { (_, _, _) in
             }.resume()
     }
 }

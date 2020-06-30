@@ -25,8 +25,9 @@ public final class AlgolyticsSDK {
     private var inputEventsManager: InputEventsManager = InputEventsManager()
     private var screenEventsManager: ScreenEventsManager = ScreenEventsManager()
 
-    public func initWith(url: String, apiPoolingTime: Double = 30000.0, components: [AlgolyticsComponentType]) {
+    public func initWith(url: String, apiKey: String, apiPoolingTime: Double = 30000.0, components: [AlgolyticsComponentType]) {
         AlgolyticsSDKService.shared.baseURL = url
+        AlgolyticsSDKService.shared.apiKey = apiKey
 
         components.forEach {
             switch $0 {

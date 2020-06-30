@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        AlgolyticsSDK.shared.initWith(url: "https://demo.scoring.one/api/scenario/code/remote/score?name=iOSTracking&key=da1ae9dc-6909-4c6a-8f7f-3fa059a7aa83",
+        AlgolyticsSDK.shared.initWith(url: "https://demo.scoring.one/api/scenario/code/remote/score?name=iOSTracking&key=da1ae9dc-6909-4c6a-8f7f-3fa059a7aa83",                                  apiKey: "api-key",
                                       apiPoolingTime: 5000,
                                       components: [
 //                                        .battery(poolingTime: 1000),
