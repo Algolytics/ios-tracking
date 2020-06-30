@@ -27,7 +27,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2224502CE5CC6A8C9650CEA1 /* AlgolyticsSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = AlgolyticsSDK.podspec; path = ../AlgolyticsSDK.podspec; sourceTree = "<group>"; };
+		2224502CE5CC6A8C9650CEA1 /* AlgolyticsSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = AlgolyticsSDK.podspec; path = ../AlgolyticsSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		22C4BAB0249B44CB0052CB2B /* AlgolyticsSDK_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AlgolyticsSDK_Example.entitlements; sourceTree = "<group>"; };
 		2C5A5930FDF80C4D6A32FF76 /* Pods-AlgolyticsSDK_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlgolyticsSDK_Example.release.xcconfig"; path = "Target Support Files/Pods-AlgolyticsSDK_Example/Pods-AlgolyticsSDK_Example.release.xcconfig"; sourceTree = "<group>"; };
 		442C89506C5FB6C4EB1E4069 /* Pods-AlgolyticsSDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlgolyticsSDK_Example.debug.xcconfig"; path = "Target Support Files/Pods-AlgolyticsSDK_Example/Pods-AlgolyticsSDK_Example.debug.xcconfig"; sourceTree = "<group>"; };

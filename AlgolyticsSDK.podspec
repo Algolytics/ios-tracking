@@ -25,7 +25,7 @@ TODO: Add long description of the pod here.
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Mateusz Mirkowski' => 'mateusz.mirkowski@emergeconsulting.pl' }
-  s.source           = { :git => 'https://github.com/Mateusz Mirkowski/AlgolyticsSDK.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://mireczek@bitbucket.org/HubertEmerge1/sdk-ios-lib.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'

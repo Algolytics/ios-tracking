@@ -171,13 +171,6 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
-		22C4BAB124A475300052CB2B /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		313015581BC53B2578477BE178594C26 /* Pods-AlgolyticsSDK_Example */ = {
 			isa = PBXGroup;
 			children = (
@@ -328,7 +321,6 @@
 		FDED16D105A1353C5F479AADEEB7E97B /* AlgolyticsSDK */ = {
 			isa = PBXGroup;
 			children = (
-				22C4BAB124A475300052CB2B /* Models */,
 				225833AB2499EE1100F4C9E7 /* Network */,
 				70B0613F7EDA7084499DA9ACEBD97BC7 /* Extensions */,
 				133A65666690B4EC84C34845D6D542B8 /* Managers */,
