@@ -1,6 +1,0 @@
-framework module Pods_AlgolyticsSDK_Tests {
-  umbrella header "Pods-AlgolyticsSDK_Tests-umbrella.h"
-
-  export *
-  module * { export * }
-}

@@ -61,7 +61,7 @@ public final class AlgolyticsSDK {
     }
 
     public func sendCustomClickEvent(identifier: String, value: String) {
-        clickEventsManager.saveCustomIdentifier(identifier: identifier, value: value)
+        clickEventsManager.sendCustomIdentifier(identifier: identifier, value: value)
     }
 
     public func startGettingInputEvents(for view: UIView) {
