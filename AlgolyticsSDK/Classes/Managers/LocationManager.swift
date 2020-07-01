@@ -23,14 +23,10 @@ struct Location: Codable {
 final class LocationManager: NSObject, BasicManagerType {
     var gettingPoolingTime: Double
     var sendingPoolingTime: Double
-    var timer: Timer?
-    var sendTimer: Timer?
+    var getDataTimer: Timer?
+    var sendDataTimer: Timer?
     var data: LocationData = LocationData(value: [])
     let locationManager = CLLocationManager()
-
-//    public override init() {
-//
-//    }
 
     init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
         self.gettingPoolingTime = gettingPoolingTime / 1000
@@ -50,7 +46,6 @@ final class LocationManager: NSObject, BasicManagerType {
         guard let currentLocation = locationManager.location?.coordinate else { return }
         let location = Location(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
         data.value.append(location)
-        print("locations = \(location.latitude) \(location.longitude)")
     }
 
     @objc private func sendData() {
@@ -58,9 +53,6 @@ final class LocationManager: NSObject, BasicManagerType {
 
         do {
             let jsonData = try encoder.encode(data)
-
-            let str = String(decoding: jsonData, as: UTF8.self)
-            print(str)
 
             AlgolyticsSDKService.shared.post(data: jsonData)
         } catch {
@@ -71,23 +63,23 @@ final class LocationManager: NSObject, BasicManagerType {
     }
 
     public func startGettingData() {
-        timer = Timer.scheduledTimer(timeInterval: gettingPoolingTime, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
-        timer?.fire()
+        getDataTimer = Timer.scheduledTimer(timeInterval: gettingPoolingTime, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
+        getDataTimer?.fire()
 
-        sendTimer = Timer.scheduledTimer(timeInterval: sendingPoolingTime, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
+        sendDataTimer = Timer.scheduledTimer(timeInterval: sendingPoolingTime, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
     }
 
     public func stopGettingData() {
-        timer?.invalidate()
-        timer = nil
+        getDataTimer?.invalidate()
+        getDataTimer = nil
+
+        sendDataTimer?.invalidate()
+        sendDataTimer = nil
     }
 }
 
 extension LocationManager: CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-
-//        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-//        let location = Location(latitude: locValue.latitude, longitude: locValue.longitude)
-
+        
     }
 }

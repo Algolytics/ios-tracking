@@ -22,7 +22,7 @@ struct InputData: Codable {
 }
 
 class InputEventsManager: BasicAspectType {
-    private var timer: Timer?
+    private var getDataTimer: Timer?
     private var dwellStartTimestamp: TimeInterval!
     private var flightStartTimestamp: TimeInterval!
     private var dwellTimestamp: TimeInterval!
@@ -37,7 +37,7 @@ class InputEventsManager: BasicAspectType {
     }
 
     @objc private func validateInputEvent() {
-        let data = timer?.userInfo as! [String: Any]
+        let data = getDataTimer?.userInfo as! [String: Any]
         let name = data["name"] as? String
         let value = data["value"] as? String
         let editingEndTimestamp = NSDate().timeIntervalSince1970
@@ -52,10 +52,7 @@ class InputEventsManager: BasicAspectType {
 
         do {
             let jsonData = try encoder.encode(data)
-
-            let str = String(decoding: jsonData, as: UTF8.self)
-            print(str)
-
+            
             AlgolyticsSDKService.shared.post(data: jsonData)
         } catch {
             print(error.localizedDescription)
@@ -65,9 +62,9 @@ class InputEventsManager: BasicAspectType {
 
 extension InputEventsManager {
     @objc private func textFieldDidChange(_ sender: UITextField) {
-        timer?.invalidate()
+        getDataTimer?.invalidate()
 
-        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(validateInputEvent), userInfo: ["name": sender.accessibilityIdentifier, "value": sender.text], repeats: false);
+        getDataTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(validateInputEvent), userInfo: ["name": sender.accessibilityIdentifier, "value": sender.text], repeats: false);
     }
 
     @objc private func textFieldStartEditing(_ sender: UITextField) {
@@ -92,9 +89,9 @@ extension InputEventsManager {
 
 extension InputEventsManager {
     func textViewDidChange(_ sender: UITextView) {
-        timer?.invalidate()
+        getDataTimer?.invalidate()
 
-        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(validateInputEvent), userInfo: ["name": sender.accessibilityIdentifier ?? "no-identifier", "value": sender.text ?? "no-value"], repeats: false);
+        getDataTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(validateInputEvent), userInfo: ["name": sender.accessibilityIdentifier ?? "no-identifier", "value": sender.text ?? "no-value"], repeats: false);
     }
     
     func textViewBeginEditing(_ sender: UITextView) {

@@ -24,7 +24,7 @@ struct Accelerometer: Codable {
 final class AccelerometerManager: BasicManagerType {
     var gettingPoolingTime: Double
     var sendingPoolingTime: Double
-    var timer: Timer?
+    var getDataTimer: Timer?
     var sendDataTimer: Timer?
     var data: AccelerometerData = AccelerometerData(value: [])
     let motionManager = CMMotionManager()
@@ -37,9 +37,7 @@ final class AccelerometerManager: BasicManagerType {
 
     @objc private func getData() {
         guard let x = motionManager.accelerometerData?.acceleration.x, let y = motionManager.accelerometerData?.acceleration.y, let z = motionManager.accelerometerData?.acceleration.z else { return }
-//        print("x: \(x)")
-//        print("y: \(y)")
-//        print("z: \(z)")
+        
         let accelerometer = Accelerometer(x: x, y: y, z: z)
         data.value.append(accelerometer)
     }
@@ -50,9 +48,6 @@ final class AccelerometerManager: BasicManagerType {
          do {
              let jsonData = try encoder.encode(data)
 
-             let str = String(decoding: jsonData, as: UTF8.self)
-             print(str)
-
              AlgolyticsSDKService.shared.post(data: jsonData)
          } catch {
              print(error.localizedDescription)
@@ -62,15 +57,15 @@ final class AccelerometerManager: BasicManagerType {
     }
 
     public func startGettingData() {
-        timer = Timer.scheduledTimer(timeInterval: gettingPoolingTime, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
-        timer?.fire()
+        getDataTimer = Timer.scheduledTimer(timeInterval: gettingPoolingTime, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
+        getDataTimer?.fire()
 
         sendDataTimer = Timer.scheduledTimer(timeInterval: sendingPoolingTime, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
     }
 
     public func stopGettingData() {
-        timer?.invalidate()
-        timer = nil
+        getDataTimer?.invalidate()
+        getDataTimer = nil
 
         sendDataTimer?.invalidate()
         sendDataTimer = nil

@@ -10,7 +10,6 @@ import Contacts
 
 struct Contact: Codable {
     let eventType = "CONTACT_NUMBER"
-//    let time = Date()
     var value: [Int]
     let deviceInfo = DeviceManager()
     let date = DateManager.shared.currentDate
@@ -19,7 +18,7 @@ struct Contact: Codable {
 final class ContactManager: BasicManagerType {
     var gettingPoolingTime: Double
     var sendingPoolingTime: Double
-    var timer: Timer?
+    var getDataTimer: Timer?
     var sendDataTimer: Timer?
     var data: Contact = Contact(value: [])
     let contactStore = CNContactStore()
@@ -40,30 +39,19 @@ final class ContactManager: BasicManagerType {
             print("Error counting all contacts.\nError: \(error)")
         }
 
-        print("contact count")
-        print(contactsCount)
-
         data.value.append(contactsCount)
-
-//        sendData()
     }
 
     @objc private func sendData() {
         let encoder = JSONEncoder()
 
-//        data.forEach {
-            do {
-                let jsonData = try encoder.encode(data)
+        do {
+            let jsonData = try encoder.encode(data)
 
-                let str = String(decoding: jsonData, as: UTF8.self)
-                print(str)
-
-                AlgolyticsSDKService.shared.post(data: jsonData)
-            } catch {
-                print(error.localizedDescription)
-            }
-//        }
-
+            AlgolyticsSDKService.shared.post(data: jsonData)
+        } catch {
+            print(error.localizedDescription)
+        }
 
         data = Contact(value: [])
     }
@@ -73,21 +61,18 @@ final class ContactManager: BasicManagerType {
             self?.contactStore.requestAccess(for: .contacts) {(value, error) in
                 DispatchQueue.main.async { [weak self] in
                     guard let strongSelf = self else { return }
-                    strongSelf.timer = Timer.scheduledTimer(timeInterval: strongSelf.gettingPoolingTime, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
-                    strongSelf.timer?.fire()
+                    strongSelf.getDataTimer = Timer.scheduledTimer(timeInterval: strongSelf.gettingPoolingTime, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
+                    strongSelf.getDataTimer?.fire()
 
                     strongSelf.sendDataTimer = Timer.scheduledTimer(timeInterval: strongSelf.sendingPoolingTime, target: strongSelf, selector: #selector(strongSelf.sendData), userInfo: nil, repeats: true)
                 }
             }
         }
-
-//        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
-//        timer?.fire()
     }
 
     public func stopGettingData() {
-        timer?.invalidate()
-        timer = nil
+        getDataTimer?.invalidate()
+        getDataTimer = nil
 
         sendDataTimer?.invalidate()
         sendDataTimer = nil

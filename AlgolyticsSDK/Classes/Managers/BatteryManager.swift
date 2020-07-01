@@ -21,27 +21,12 @@ struct Battery: Codable {
     enum CodingKeys: String, CodingKey {
         case batteryLevel, isAcCharging
     }
-
-//    public func encode(to encoder: Encoder) throws {
-//        var container = encoder.container(keyedBy: CodingKeys.self)
-//        try container.encode(batteryLevel, forKey: .batteryLevel)
-//        try container.encode(isAcCharging, forKey: .isAcCharging)
-//    }
 }
-
-//extension Battery: Encodable {
-//    public func encode(to encoder: Encoder) throws {
-//        var container = encoder.container(keyedBy: CodingKeys.self)
-//        try container.encode(id, forKey: .id)
-//        try container.encode(type.rawValue, forKey: .type)
-//        try container.encode(isFavorited, forKey: .isFavorited)
-//    }
-//}
 
 final class BatteryManager: BasicManagerType {
     var gettingPoolingTime: Double
     var sendingPoolingTime: Double
-    var timer: Timer?
+    var getDataTimer: Timer?
     var sendDataTimer: Timer?
     var data: BatteryData = BatteryData(batteryInfo: [])
 
@@ -59,19 +44,14 @@ final class BatteryManager: BasicManagerType {
     @objc private func sendData() {
         let encoder = JSONEncoder()
 
-//        data.forEach {
-            do {
-                let jsonData = try encoder.encode(data)
+        do {
+            let jsonData = try encoder.encode(data)
 
-                let str = String(decoding: jsonData, as: UTF8.self)
-                print(str)
+            AlgolyticsSDKService.shared.post(data: jsonData)
 
-                AlgolyticsSDKService.shared.post(data: jsonData)
-
-            } catch {
-                print(error.localizedDescription)
-            }
-//        }
+        } catch {
+            print(error.localizedDescription)
+        }
 
         data = BatteryData(batteryInfo: [])
     }
@@ -79,15 +59,15 @@ final class BatteryManager: BasicManagerType {
     public func startGettingData() {
         UIDevice.current.isBatteryMonitoringEnabled = true
 
-        timer = Timer.scheduledTimer(timeInterval: gettingPoolingTime, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
-        timer?.fire()
+        getDataTimer = Timer.scheduledTimer(timeInterval: gettingPoolingTime, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
+        getDataTimer?.fire()
 
         sendDataTimer = Timer.scheduledTimer(timeInterval: sendingPoolingTime, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
     }
 
     public func stopGettingData() {
-        timer?.invalidate()
-        timer = nil
+        getDataTimer?.invalidate()
+        getDataTimer = nil
 
         sendDataTimer?.invalidate()
         sendDataTimer = nil

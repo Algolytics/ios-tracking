@@ -8,6 +8,7 @@
 import Foundation
 
 struct ClickEvent: Codable {
+    let eventType: String = "CLICK_EVENT"
     let name: String
     let value: String
     let deviceInfo = DeviceManager()
@@ -71,9 +72,6 @@ class ClickEventsManager: BasicAspectType {
 
         do {
             let jsonData = try encoder.encode(event)
-
-            let str = String(decoding: jsonData, as: UTF8.self)
-            print(str)
 
             AlgolyticsSDKService.shared.post(data: jsonData)
         } catch {

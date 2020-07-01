@@ -18,8 +18,8 @@ struct PhotoData: Codable {
 final class PhotoManager: BasicManagerType {
     var gettingPoolingTime: Double
     var sendingPoolingTime: Double
-    var timer: Timer?
-    var sendTimer: Timer?
+    var getDataTimer: Timer?
+    var sendDataTimer: Timer?
     var data: PhotoData = PhotoData(value: [])
 
     init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
@@ -29,8 +29,6 @@ final class PhotoManager: BasicManagerType {
 
     @objc private func getData() {
         let result = PHAsset.fetchAssets(with: .image, options: nil)
-        print("image count")
-        print(result.count)
 
         data.value.append(result.count)
     }
@@ -40,9 +38,6 @@ final class PhotoManager: BasicManagerType {
 
         do {
             let jsonData = try encoder.encode(data)
-
-            let str = String(decoding: jsonData, as: UTF8.self)
-            print(str)
 
             AlgolyticsSDKService.shared.post(data: jsonData)
         } catch {
@@ -56,19 +51,19 @@ final class PhotoManager: BasicManagerType {
         PHPhotoLibrary.requestAuthorization { (status) in
             DispatchQueue.main.async { [weak self] in
                 guard let strongSelf = self else { return }
-                strongSelf.timer = Timer.scheduledTimer(timeInterval: strongSelf.gettingPoolingTime, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
-                strongSelf.timer?.fire()
+                strongSelf.getDataTimer = Timer.scheduledTimer(timeInterval: strongSelf.gettingPoolingTime, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
+                strongSelf.getDataTimer?.fire()
 
-                strongSelf.sendTimer = Timer.scheduledTimer(timeInterval: strongSelf.sendingPoolingTime, target: strongSelf, selector: #selector(strongSelf.sendData), userInfo: nil, repeats: true)
+                strongSelf.sendDataTimer = Timer.scheduledTimer(timeInterval: strongSelf.sendingPoolingTime, target: strongSelf, selector: #selector(strongSelf.sendData), userInfo: nil, repeats: true)
             }
         }
     }
 
     public func stopGettingData() {
-        timer?.invalidate()
-        timer = nil
+        getDataTimer?.invalidate()
+        getDataTimer = nil
 
-        sendTimer?.invalidate()
-        sendTimer = nil
+        sendDataTimer?.invalidate()
+        sendDataTimer = nil
     }
 }

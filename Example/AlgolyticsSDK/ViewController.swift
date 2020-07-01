@@ -30,18 +30,7 @@ class ViewController: UIViewController {
 //        datePicker.addTarget(AlgolyticsSDK.shared, action: #selector(AlgolyticsSDK.shared.getDatePickerData(_:)), for: .valueChanged)
 
           //ToolBar
-        let toolbar = UIToolbar();
-        toolbar.sizeToFit()
-        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(donedatePicker));
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker));
-
-        toolbar.setItems([doneButton,spaceButton,cancelButton], animated: false)
-
-//        textField.inputAccessoryView = toolbar
-//        textField.inputView = datePicker
-
-        AlgolyticsSDK.shared.sendScreenName(name: "dada")
+        AlgolyticsSDK.shared.sendScreenName(name: "test")
 
         textView.delegate = self
 
@@ -50,16 +39,8 @@ class ViewController: UIViewController {
     }
 
     @objc func tap(sender: UITapGestureRecognizer) {
+        AlgolyticsSDK.shared.sendCustomEvent(identifier: "finish", value: "finish")
         view.endEditing(true)
-    }
-
-    @objc func donedatePicker() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd/MM/yyyy"
-        textField.text = formatter.string(from: datePicker.date)
-        self.view.endEditing(true)
-
-        AlgolyticsSDK.shared.sendCustomEvent(identifier: "picker", value: textField.text!)
     }
 
     @objc func cancelDatePicker() {

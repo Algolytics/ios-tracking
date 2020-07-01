@@ -22,8 +22,8 @@ struct Wifi: Codable {
 final class WifiManager: BasicManagerType {
     var gettingPoolingTime: Double
     var sendingPoolingTime: Double
-    var timer: Timer?
-    var sendTimer: Timer?
+    var getDataTimer: Timer?
+    var sendDataTimer: Timer?
     var data: WifiData = WifiData(value: [])
 
     init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
@@ -42,8 +42,6 @@ final class WifiManager: BasicManagerType {
             }
         }
         guard let wifiName = ssid else { return }
-        print("wifiname")
-        print(wifiName)
         data.value.append(Wifi(name: wifiName))
     }
 
@@ -51,9 +49,6 @@ final class WifiManager: BasicManagerType {
         let encoder = JSONEncoder()
             do {
                 let jsonData = try encoder.encode(data)
-
-                let str = String(decoding: jsonData, as: UTF8.self)
-                print(str)
 
                 AlgolyticsSDKService.shared.post(data: jsonData)
             } catch {
@@ -64,14 +59,17 @@ final class WifiManager: BasicManagerType {
     }
 
     public func startGettingData() {
-        timer = Timer.scheduledTimer(timeInterval: gettingPoolingTime, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
-        timer?.fire()
+        getDataTimer = Timer.scheduledTimer(timeInterval: gettingPoolingTime, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
+        getDataTimer?.fire()
 
-        sendTimer = Timer.scheduledTimer(timeInterval: sendingPoolingTime, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
+        sendDataTimer = Timer.scheduledTimer(timeInterval: sendingPoolingTime, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
     }
 
     public func stopGettingData() {
-        timer?.invalidate()
-        timer = nil
+        getDataTimer?.invalidate()
+        getDataTimer = nil
+
+        sendDataTimer?.invalidate()
+        sendDataTimer = nil
     }
 }

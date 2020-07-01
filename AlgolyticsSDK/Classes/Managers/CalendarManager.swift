@@ -19,16 +19,12 @@ struct Calendar: Codable {
     var title: String
     var dateStart: TimeInterval
     var dateEnd: TimeInterval
-
-//    enum CodingKeys: String, CodingKey {
-//        case title, dateStart, dateEnd
-//    }
 }
 
 final class CalendarManager: BasicManagerType {
     var gettingPoolingTime: Double
     var sendingPoolingTime: Double
-    var timer: Timer?
+    var getDataTimer: Timer?
     var sendDataTimer: Timer?
     var data: CalendarData = CalendarData(calendarInfo: [])
     var eventStore = EKEventStore()
@@ -57,9 +53,6 @@ final class CalendarManager: BasicManagerType {
             }
         }
 
-        print("all calendar events")
-        print(calendarEvents)
-
         data.calendarInfo.append(calendarEvents)
     }
 
@@ -68,9 +61,6 @@ final class CalendarManager: BasicManagerType {
 
         do {
             let jsonData = try encoder.encode(["EventList" : data])
-
-            let str = String(decoding: jsonData, as: UTF8.self)
-            print(str)
 
             AlgolyticsSDKService.shared.post(data: jsonData)
         } catch {
@@ -81,13 +71,11 @@ final class CalendarManager: BasicManagerType {
     }
 
     public func startGettingData() {
-//        stopGettingData()
         eventStore.requestAccess(to: .event) { [weak self] (value, error) in
-//            self?.startGettingData()
             DispatchQueue.main.async { [weak self] in
                 guard let strongSelf = self else { return }
-                strongSelf.timer = Timer.scheduledTimer(timeInterval: strongSelf.gettingPoolingTime, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
-                strongSelf.timer?.fire()
+                strongSelf.getDataTimer = Timer.scheduledTimer(timeInterval: strongSelf.gettingPoolingTime, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
+                strongSelf.getDataTimer?.fire()
 
                 strongSelf.sendDataTimer = Timer.scheduledTimer(timeInterval: strongSelf.sendingPoolingTime, target: strongSelf, selector: #selector(strongSelf.sendData), userInfo: nil, repeats: true)
             }
@@ -95,8 +83,8 @@ final class CalendarManager: BasicManagerType {
     }
 
     public func stopGettingData() {
-        timer?.invalidate()
-        timer = nil
+        getDataTimer?.invalidate()
+        getDataTimer = nil
 
         sendDataTimer?.invalidate()
         sendDataTimer = nil
