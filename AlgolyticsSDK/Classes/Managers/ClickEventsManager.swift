@@ -61,8 +61,8 @@ class ClickEventsManager: BasicAspectType {
         sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: String(sender.value))
     }
 
-    func sendCustomIdentifier(identifier: String, value: String) {
-        sendData(name: identifier, value: value)
+    func sendCustomIdentifier(identifier: String?, value: String) {
+        sendData(name: identifier ?? "no-identifier", value: value)
     }
 
     func sendData(name: String, value: String) {

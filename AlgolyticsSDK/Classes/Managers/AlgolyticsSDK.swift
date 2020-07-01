@@ -61,7 +61,7 @@ public final class AlgolyticsSDK {
         clickEventsManager.startGettingClickEvents(for: view)
     }
 
-    public func sendCustomClickEvent(identifier: String, value: String) {
+    public func sendCustomEvent(identifier: String?, value: String) {
         clickEventsManager.sendCustomIdentifier(identifier: identifier, value: value)
     }
 
@@ -80,8 +80,4 @@ public final class AlgolyticsSDK {
     public func sendTextViewEvent(_ sender: UITextView) {
         inputEventsManager.textViewDidChange(sender)
     }
-
-//    public func stopGettingData() {
-//        components.forEach { $0.stopGettingData() }
-//    }
 }

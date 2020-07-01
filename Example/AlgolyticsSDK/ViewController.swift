@@ -59,7 +59,7 @@ class ViewController: UIViewController {
         textField.text = formatter.string(from: datePicker.date)
         self.view.endEditing(true)
 
-        AlgolyticsSDK.shared.sendCustomClickEvent(identifier: "picker", value: textField.text!)
+        AlgolyticsSDK.shared.sendCustomEvent(identifier: "picker", value: textField.text!)
     }
 
     @objc func cancelDatePicker() {
