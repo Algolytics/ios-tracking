@@ -44,10 +44,6 @@
                                     <constraint firstAttribute="trailing" secondItem="e8g-x6-muw" secondAttribute="trailing" constant="97" id="scq-pI-Sxw"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nKo-VY-tdU">
-                                <rect key="frame" x="164" y="97" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
-                            </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="lalala" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="1Ut-ki-72s">
                                 <rect key="frame" x="0.0" y="117" width="193" height="108"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -70,17 +66,31 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="kokoko" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="1Pf-CS-x8X">
-                                <rect key="frame" x="223" y="97" width="152" height="76"/>
+                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mcX-rQ-pFj">
+                                <rect key="frame" x="-7" y="365" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="fp6-dy-sKL">
+                                <rect key="frame" x="220" y="47" width="131" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <connections>
-                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="0yk-kh-IrB"/>
-                                </connections>
-                            </textView>
+                                <segments>
+                                    <segment title="First"/>
+                                    <segment title="Second"/>
+                                </segments>
+                            </segmentedControl>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yrj-Og-9sh">
+                                <rect key="frame" x="220" y="85" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </switch>
+                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="TG3-Qg-euQ">
+                                <rect key="frame" x="281" y="85" width="94" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </stepper>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nKo-VY-tdU">
+                                <rect key="frame" x="137" y="79" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -103,6 +113,7 @@
                     </view>
                     <connections>
                         <outlet property="datePicker" destination="W5w-KX-Rn1" id="GcJ-Oj-BGu"/>
+                        <outlet property="searchBar" destination="mcX-rQ-pFj" id="bti-7E-R8v"/>
                         <outlet property="textField" destination="vJy-Pz-DR1" id="uNi-MI-rsv"/>
                         <outlet property="textView" destination="1Ut-ki-72s" id="Of2-Q5-GvR"/>
                     </connections>

@@ -15,9 +15,15 @@ class ViewController: UIViewController {
     @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var datePicker: UIDatePicker!
 //    let datePicker = UIDatePicker()
+    @IBOutlet weak var searchBar: UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        searchBar.accessibilityTraits = UIAccessibilityTraitSearchField
+        searchBar.accessibilityIdentifier = "koko"
+        searchBar.isAccessibilityElement = false
+
         // Do any additional setup after loading the view, typ ically from a nib.
         AlgolyticsSDK.shared.startGettingClickEvents(for: view)
         AlgolyticsSDK.shared.startGettingInputEvents(for: view)

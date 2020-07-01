@@ -30,16 +30,16 @@ class InputEventsManager: BasicAspectType {
 
     func startGettingInputEvents(for view: UIView) {
         let allTextFields = view.get(all: UITextField.self)
+        
         allTextFields.forEach { $0.addTarget(self, action: #selector(textFieldStartEditing(_:)), for: .editingDidBegin)}
         allTextFields.forEach { $0.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)}
         allTextFields.forEach { $0.addTarget(self, action: #selector(textFieldEndEditing), for: .editingDidEnd)}
     }
 
     @objc private func validateInputEvent() {
-        let data = timer?.userInfo as! [String: String]
-        print("validate input event")
-        let name = data["name"]
-        let value = data["value"]
+        let data = timer?.userInfo as! [String: Any]
+        let name = data["name"] as? String
+        let value = data["value"] as? String
         let editingEndTimestamp = NSDate().timeIntervalSince1970
         dwellTimestamp = editingEndTimestamp - dwellStartTimestamp
 
@@ -47,8 +47,6 @@ class InputEventsManager: BasicAspectType {
     }
 
     private func sendInputEvent(name: String, value: String, dwellTime: TimeInterval, flightTime: TimeInterval) {
-        print("dwelltime \(dwellTime)")
-        print("flighttime \(flightTime)")
         let data = InputEventData(value: InputData(inputName: name, value: value, dwellTime: dwellTime, flightTime: flightTime))
         let encoder = JSONEncoder()
 
@@ -74,7 +72,7 @@ extension InputEventsManager {
 
     @objc private func textFieldStartEditing(_ sender: UITextField) {
         dwellStartTimestamp = NSDate().timeIntervalSince1970
-        print("editing start")
+
         if flightStartTimestamp != nil {
             flightTimestamp = dwellStartTimestamp - flightStartTimestamp
         }
@@ -83,7 +81,7 @@ extension InputEventsManager {
     @objc private func textFieldEndEditing(_ sender: UITextField) {
         let name = sender.accessibilityLabel
         let value = sender.text
-        print("editing end")
+
         let editingEndTimestamp = NSDate().timeIntervalSince1970
         dwellTimestamp = editingEndTimestamp - dwellStartTimestamp
         flightStartTimestamp = editingEndTimestamp
@@ -100,8 +98,6 @@ extension InputEventsManager {
     }
     
     func textViewBeginEditing(_ sender: UITextView) {
-        print("textViewBeginEditing")
-        print(sender.text ?? "")
         dwellStartTimestamp = NSDate().timeIntervalSince1970
 
         if flightStartTimestamp != nil {
@@ -112,7 +108,6 @@ extension InputEventsManager {
     func textViewEndEditing(_ sender: UITextView) {
         let name = sender.accessibilityLabel
         let value = sender.text
-        print("textViewEndEditing")
 
         let editingEndTimestamp = NSDate().timeIntervalSince1970
         dwellTimestamp = editingEndTimestamp - dwellStartTimestamp

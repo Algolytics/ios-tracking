@@ -25,6 +25,15 @@ class ClickEventsManager: BasicAspectType {
 
         let allSliders = view.get(all: UISlider.self)
         allSliders.forEach { $0.addTarget(self, action: #selector(getSliderData(_:)), for: .touchDown)}
+
+        let allSwitches = view.get(all: UISwitch.self)
+        allSwitches.forEach { $0.addTarget(self, action: #selector(getSwitchData), for: .valueChanged)}
+
+        let allSegmented = view.get(all: UISegmentedControl.self)
+        allSegmented.forEach { $0.addTarget(self, action: #selector(getSegmentedData(_:)), for: .valueChanged)}
+
+        let allStepers = view.get(all: UIStepper.self)
+        allStepers.forEach { $0.addTarget(self, action: #selector(getSteperData(_:)), for: .valueChanged)}
     }
 
     @objc private func getButtonData(_ sender: UIButton) {
@@ -32,17 +41,27 @@ class ClickEventsManager: BasicAspectType {
     }
 
     @objc private func getSliderData(_ sender: UISlider) {
-        print(sender.value)
         sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: String(sender.value))
     }
 
     @objc private func getDatePickerData(_ sender: UIDatePicker) {
-        print(sender.date)
         sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: DateManager.shared.dateFormatter.string(from: sender.date))
     }
 
+    @objc private func getSwitchData(_ sender: UISwitch) {
+        sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: sender.isOn ? "true" : "false")
+    }
+
+    @objc private func getSegmentedData(_ sender: UISegmentedControl) {
+        let title = sender.titleForSegment(at: sender.selectedSegmentIndex)
+        sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: title ?? "no-value")
+    }
+
+    @objc private func getSteperData(_ sender: UIStepper) {
+        sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: String(sender.value))
+    }
+
     func sendCustomIdentifier(identifier: String, value: String) {
-        print("id \(identifier), value \(value)")
         sendData(name: identifier, value: value)
     }
 
