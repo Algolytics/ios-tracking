@@ -7,10 +7,10 @@
 
 import UIKit
 
-struct BatteryData: Codable {
+class BatteryData: Event {
     let eventType = "Battery"
-    var batteryInfo: [Battery]
-    let deviceInfo = DeviceManager()
+    var batteryInfo: Battery = Battery(batteryLevel: -1, isAcCharging: false)
+//    let deviceInfo = DeviceManager()
     let date = DateManager.shared.currentDate
 }
 
@@ -28,7 +28,7 @@ final class BatteryManager: BasicManagerType {
     var sendingPoolingTime: Double
     var getDataTimer: Timer?
     var sendDataTimer: Timer?
-    var data: BatteryData = BatteryData(batteryInfo: [])
+    var data: BatteryData = BatteryData()
 
     init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
         self.gettingPoolingTime = gettingPoolingTime / 1000
@@ -38,7 +38,9 @@ final class BatteryManager: BasicManagerType {
     @objc private func getData() {
         let battery = Battery(batteryLevel: UIDevice.current.batteryLevel * 100, isAcCharging: UIDevice.current.batteryState.rawValue == 2)
         
-        data.batteryInfo.append(battery)
+        data.batteryInfo = battery
+
+        AlgolyticsSDK.shared.dataToSend.eventList.append(data)
     }
 
     @objc private func sendData() {
@@ -46,14 +48,16 @@ final class BatteryManager: BasicManagerType {
 
         do {
             let jsonData = try encoder.encode(data)
+            
+//            AlgolyticsSDKService.shared.dataToSend.append(jsonData)
 
-            AlgolyticsSDKService.shared.post(data: jsonData)
+//            AlgolyticsSDKService.shared.post(data: jsonData)
 
         } catch {
             print(error.localizedDescription)
         }
 
-        data = BatteryData(batteryInfo: [])
+        data = BatteryData()
     }
 
     public func startGettingData() {

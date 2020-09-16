@@ -24,6 +24,8 @@ public final class AlgolyticsSDK {
     private var clickEventsManager: ClickEventsManager = ClickEventsManager()
     private var inputEventsManager: InputEventsManager = InputEventsManager()
     private var screenEventsManager: ScreenEventsManager = ScreenEventsManager()
+    var dataToSend: EventData = EventData(eventList: [])
+    var sendDataTimer: Timer?
 
     public func initWith(url: String, apiKey: String, apiPoolingTime: Double = 30000.0, components: [AlgolyticsComponentType]) {
         AlgolyticsSDKService.shared.baseURL = url
@@ -49,6 +51,8 @@ public final class AlgolyticsSDK {
                 self.components.append(WifiManager(gettingPoolingTime: poolingTime, sendingPoolingTime: apiPoolingTime))
             }
         }
+
+        sendDataTimer = Timer.scheduledTimer(timeInterval: apiPoolingTime/1000, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
 
         self.components.forEach { $0.startGettingData() }
     }
@@ -79,5 +83,9 @@ public final class AlgolyticsSDK {
 
     public func sendTextViewEvent(_ sender: UITextView) {
         inputEventsManager.textViewDidChange(sender)
+    }
+
+    @objc private func sendData() {
+        AlgolyticsSDKService.shared.post(data: Data(), dataToSend: dataToSend)
     }
 }
