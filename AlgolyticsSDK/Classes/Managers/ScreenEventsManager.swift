@@ -8,18 +8,19 @@
 import Foundation
 
 struct ScreenEventData: Codable {
-    let eventType: String = "ACTIVITY_CHANGED"
-    let value: String
-    let deviceInfo = DeviceManager()
+    let eventType: String = "SCREEN_CHANGED"
+    let currentScreen: String
+    let newScreen: String
+//    let deviceInfo = DeviceManager()
     let date = DateManager.shared.currentDate
 }
 
 class ScreenEventsManager: BasicAspectType {
-    func saveScreenName(name: String) {
+    func saveScreenName(currentScreen: String, newScreen: String) {
         let encoder = JSONEncoder()
 
         do {
-            let jsonData = try encoder.encode(ScreenEventData(value: name))
+            let jsonData = try encoder.encode(ScreenEventData(currentScreen: currentScreen, newScreen: newScreen))
 
             AlgolyticsSDKService.shared.post(data: jsonData)
         } catch {

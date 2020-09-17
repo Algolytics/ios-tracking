@@ -7,12 +7,28 @@
 
 import Foundation
 
-struct ClickEvent: Codable {
-    let eventType: String = "CLICK_EVENT"
+class ClickEvent: Event {
+    var eventType: String = "CLICK_EVENT"
+    var value: Click
+//    let deviceInfo = DeviceManager()
+    var time = DateManager.shared.currentDate
+
+    init(click: Click, eventType: String, time: String = DateManager.shared.currentDate) {
+        self.value = click
+        self.eventType = eventType
+        self.time = time
+        
+        super.init()
+    }
+
+    required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
+}
+
+struct Click: Codable {
     let name: String
     let value: String
-    let deviceInfo = DeviceManager()
-    let date = DateManager.shared.currentDate
 }
 
 class ClickEventsManager: BasicAspectType {
@@ -38,36 +54,36 @@ class ClickEventsManager: BasicAspectType {
     }
 
     @objc private func getButtonData(_ sender: UIButton) {
-        sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: sender.titleLabel?.text ?? "no-text")
+        sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: sender.titleLabel?.text ?? "no-text", eventType: "BUTTON_CLICK")
     }
 
     @objc private func getSliderData(_ sender: UISlider) {
-        sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: String(sender.value))
+        sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: String(sender.value), eventType: "SLIDER_CLICK")
     }
 
     @objc private func getDatePickerData(_ sender: UIDatePicker) {
-        sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: DateManager.shared.dateFormatter.string(from: sender.date))
+        sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: DateManager.shared.dateFormatter.string(from: sender.date), eventType: "DATEPICKER_CLICK")
     }
 
     @objc private func getSwitchData(_ sender: UISwitch) {
-        sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: sender.isOn ? "true" : "false")
+        sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: sender.isOn ? "true" : "false", eventType: "SWITCH_CLICK")
     }
 
     @objc private func getSegmentedData(_ sender: UISegmentedControl) {
         let title = sender.titleForSegment(at: sender.selectedSegmentIndex)
-        sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: title ?? "no-value")
+        sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: title ?? "no-value", eventType: "SEGMENTED_CLICK")
     }
 
     @objc private func getSteperData(_ sender: UIStepper) {
-        sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: String(sender.value))
+        sendData(name: sender.accessibilityIdentifier ?? "no-identifier", value: String(sender.value), eventType: "STEPPER_CLICK")
     }
 
-    func sendCustomIdentifier(identifier: String?, value: String) {
-        sendData(name: identifier ?? "no-identifier", value: value)
+    func sendCustomIdentifier(identifier: String?, value: String, eventType: String = "CLICK_EVENT") {
+        sendData(name: identifier ?? "no-identifier", value: value, eventType: eventType)
     }
 
-    func sendData(name: String, value: String) {
-        let event = ClickEvent(name: name, value: value)
+    func sendData(name: String, value: String, eventType: String = "CLICK_EVENT") {
+        let event = ClickEvent(click: Click(name: name, value: value), eventType: eventType)
         let encoder = JSONEncoder()
 
         do {

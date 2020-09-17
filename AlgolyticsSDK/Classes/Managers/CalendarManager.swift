@@ -8,17 +8,17 @@
 import Foundation
 import EventKit
 
-struct CalendarData: Codable {
+class CalendarData: Event {
     let eventType = "Calendar"
-    var calendarInfo: [[Calendar]]
-    let deviceInfo = DeviceManager()
-    let date = DateManager.shared.currentDate
+    var value: [Calendar] = []
+//    let deviceInfo = DeviceManager()
+    var time = DateManager.shared.currentDate
 }
 
 struct Calendar: Codable {
     var title: String
-    var dateStart: TimeInterval
-    var dateEnd: TimeInterval
+    var dtstart: TimeInterval
+    var dtend: TimeInterval
 }
 
 final class CalendarManager: BasicManagerType {
@@ -26,7 +26,7 @@ final class CalendarManager: BasicManagerType {
     var sendingPoolingTime: Double
     var getDataTimer: Timer?
     var sendDataTimer: Timer?
-    var data: CalendarData = CalendarData(calendarInfo: [])
+    var data: CalendarData = CalendarData()
     var eventStore = EKEventStore()
 
     init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
@@ -48,26 +48,29 @@ final class CalendarManager: BasicManagerType {
             let events = eventStore.events(matching: predicate)
 
             for event in events {
-                let calendar = Calendar(title: event.title, dateStart: event.startDate.timeIntervalSince1970, dateEnd: event.endDate.timeIntervalSince1970)
+                let calendar = Calendar(title: event.title, dtstart: event.startDate.timeIntervalSince1970, dtend: event.endDate.timeIntervalSince1970)
                 calendarEvents.append(calendar)
             }
         }
 
-        data.calendarInfo.append(calendarEvents)
+        data.value = calendarEvents
+        data.time = DateManager.shared.currentDate
+
+        AlgolyticsSDK.shared.dataToSend.eventList.append(data)
     }
 
     @objc private func sendData() {
-        let encoder = JSONEncoder()
-
-        do {
-            let jsonData = try encoder.encode(["EventList" : data])
-
-            AlgolyticsSDKService.shared.post(data: jsonData)
-        } catch {
-            print(error.localizedDescription)
-        }
-
-        data = CalendarData(calendarInfo: [])
+//        let encoder = JSONEncoder()
+//
+//        do {
+//            let jsonData = try encoder.encode(["EventList" : data])
+//
+//            AlgolyticsSDKService.shared.post(data: jsonData)
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+//
+//        data = CalendarData()
     }
 
     public func startGettingData() {

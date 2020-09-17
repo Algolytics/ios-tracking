@@ -8,11 +8,11 @@
 import Foundation
 import CoreLocation
 
-struct LocationData: Codable {
+class LocationData: Event {
     let eventType = "Location"
-    var value: [Location]
-    let deviceInfo = DeviceManager()
-    let date = DateManager.shared.currentDate
+    var value: Location = Location(latitude: 0, longitude: 0)
+//    let deviceInfo = DeviceManager()
+    var time = DateManager.shared.currentDate
 }
 
 struct Location: Codable {
@@ -25,7 +25,7 @@ final class LocationManager: NSObject, BasicManagerType {
     var sendingPoolingTime: Double
     var getDataTimer: Timer?
     var sendDataTimer: Timer?
-    var data: LocationData = LocationData(value: [])
+    var data: LocationData = LocationData()
     let locationManager = CLLocationManager()
 
     init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
@@ -45,21 +45,24 @@ final class LocationManager: NSObject, BasicManagerType {
 
         guard let currentLocation = locationManager.location?.coordinate else { return }
         let location = Location(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
-        data.value.append(location)
+        data.value = location
+        data.time = DateManager.shared.currentDate
+
+        AlgolyticsSDK.shared.dataToSend.eventList.append(data)
     }
 
     @objc private func sendData() {
-        let encoder = JSONEncoder()
-
-        do {
-            let jsonData = try encoder.encode(data)
-
-            AlgolyticsSDKService.shared.post(data: jsonData)
-        } catch {
-            print(error.localizedDescription)
-        }
-
-        data = LocationData(value: [])
+//        let encoder = JSONEncoder()
+//
+//        do {
+//            let jsonData = try encoder.encode(data)
+//
+//            AlgolyticsSDKService.shared.post(data: jsonData)
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+//
+//        data = LocationData(value: [])
     }
 
     public func startGettingData() {

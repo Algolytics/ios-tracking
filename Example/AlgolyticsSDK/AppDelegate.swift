@@ -22,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                       components: [
                                         .battery(poolingTime: 1000),
 //                                                   .accelerometer(poolingTime: 1000)
+                                        .calendar(poolingTime: 1000),
+
 //                                                   BatteryManager(),
 //                                                   AccelerometerManager(),
 //                                                   CalendarManager(),

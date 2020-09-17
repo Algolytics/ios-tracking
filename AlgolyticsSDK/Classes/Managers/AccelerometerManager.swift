@@ -8,14 +8,15 @@
 import Foundation
 import CoreMotion
 
-struct AccelerometerData: Codable {
+class AccelerometerData: Event {
     let eventType = "Accelerometer"
-    let deviceInfo = DeviceManager()
-    var value: [Accelerometer]
-    let date = DateManager.shared.currentDate
+//    let deviceInfo = DeviceManager()
+    var value: [Accelerometer] = []
+    var time = DateManager.shared.currentDate
 }
 
 struct Accelerometer: Codable {
+    let time = DateManager.shared.currentDate
     var x: Double
     var y: Double
     var z: Double
@@ -26,7 +27,7 @@ final class AccelerometerManager: BasicManagerType {
     var sendingPoolingTime: Double
     var getDataTimer: Timer?
     var sendDataTimer: Timer?
-    var data: AccelerometerData = AccelerometerData(value: [])
+    var data: AccelerometerData = AccelerometerData()
     let motionManager = CMMotionManager()
 
     public init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
@@ -40,20 +41,25 @@ final class AccelerometerManager: BasicManagerType {
         
         let accelerometer = Accelerometer(x: x, y: y, z: z)
         data.value.append(accelerometer)
+        data.time = DateManager.shared.currentDate
+
+        AlgolyticsSDK.shared.dataToSend.eventList.append(data)
+
+        data = AccelerometerData()
     }
 
     @objc private func sendData() {
-        let encoder = JSONEncoder()
+//        let encoder = JSONEncoder()
+//
+//         do {
+//             let jsonData = try encoder.encode(data)
+//
+//             AlgolyticsSDKService.shared.post(data: jsonData)
+//         } catch {
+//             print(error.localizedDescription)
+//         }
 
-         do {
-             let jsonData = try encoder.encode(data)
-
-             AlgolyticsSDKService.shared.post(data: jsonData)
-         } catch {
-             print(error.localizedDescription)
-         }
-
-         data = AccelerometerData(value: [])
+//         data = AccelerometerData()
     }
 
     public func startGettingData() {

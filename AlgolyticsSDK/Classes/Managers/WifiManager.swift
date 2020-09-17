@@ -8,11 +8,11 @@
 import Foundation
 import SystemConfiguration.CaptiveNetwork
 
-struct WifiData: Codable {
-    let eventType = "Wifi"
-    var value: [Wifi]
-    let deviceInfo = DeviceManager()
-    let date = DateManager.shared.currentDate
+class WifiData: Event {
+    let eventType = "WIFI"
+    var value: Wifi = Wifi(name: "")
+//    let deviceInfo = DeviceManager()
+    var time = DateManager.shared.currentDate
 }
 
 struct Wifi: Codable {
@@ -24,7 +24,7 @@ final class WifiManager: BasicManagerType {
     var sendingPoolingTime: Double
     var getDataTimer: Timer?
     var sendDataTimer: Timer?
-    var data: WifiData = WifiData(value: [])
+    var data: WifiData = WifiData()
 
     init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
         self.gettingPoolingTime = gettingPoolingTime / 1000
@@ -42,20 +42,23 @@ final class WifiManager: BasicManagerType {
             }
         }
         guard let wifiName = ssid else { return }
-        data.value.append(Wifi(name: wifiName))
+        data.value = Wifi(name: wifiName)
+        data.time = DateManager.shared.currentDate
+
+        AlgolyticsSDK.shared.dataToSend.eventList.append(data)
     }
 
     @objc private func sendData() {
-        let encoder = JSONEncoder()
-            do {
-                let jsonData = try encoder.encode(data)
-
-                AlgolyticsSDKService.shared.post(data: jsonData)
-            } catch {
-                print(error.localizedDescription)
-            }
-
-        data = WifiData(value: [])
+//        let encoder = JSONEncoder()
+//            do {
+//                let jsonData = try encoder.encode(data)
+//
+//                AlgolyticsSDKService.shared.post(data: jsonData)
+//            } catch {
+//                print(error.localizedDescription)
+//            }
+//
+//        data = WifiData(value: [])
     }
 
     public func startGettingData() {

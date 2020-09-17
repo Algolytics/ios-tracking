@@ -9,17 +9,17 @@ import Foundation
 import Reachability
 import Network
 
-struct ConnectivityData: Codable {
+class ConnectivityData: Event {
     let eventType = "Connectivity"
-    var connectivityInfo: [Connectivity]
-    let deviceInfo = DeviceManager()
-    let date = DateManager.shared.currentDate
+    var value: Connectivity = Connectivity(isConnected: false, isConnectedToWifi: false, isConnectedToMobile: false)
+//    let deviceInfo = DeviceManager()
+    var time = DateManager.shared.currentDate
 }
 
 struct Connectivity: Codable {
     var isConnected: Bool
     var isConnectedToWifi: Bool
-    var isConnectedToCellular: Bool
+    var isConnectedToMobile: Bool
 }
 
 final class ConnectivityManager: BasicManagerType {
@@ -27,7 +27,7 @@ final class ConnectivityManager: BasicManagerType {
     var sendingPoolingTime: Double
     var getDataTimer: Timer?
     var sendDataTimer: Timer?
-    var data: ConnectivityData = ConnectivityData(connectivityInfo: [])
+    var data: ConnectivityData = ConnectivityData()
     let reachability = try! Reachability()
 
     init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
@@ -36,15 +36,23 @@ final class ConnectivityManager: BasicManagerType {
 
         reachability.whenReachable = { [weak self] reachability in
             if reachability.connection == .wifi {
-                self?.data.connectivityInfo.append(Connectivity(isConnected: true, isConnectedToWifi: true, isConnectedToCellular: false))
+                self?.data.value = Connectivity(isConnected: true, isConnectedToWifi: true, isConnectedToMobile: false)
             } else if reachability.connection == .cellular {
-                self?.data.connectivityInfo.append(Connectivity(isConnected: true, isConnectedToWifi: false, isConnectedToCellular: true))
+                self?.data.value = Connectivity(isConnected: true, isConnectedToWifi: false, isConnectedToMobile: true)
             } else {
-                self?.data.connectivityInfo.append(Connectivity(isConnected: false, isConnectedToWifi: false, isConnectedToCellular: false))
+                self?.data.value = Connectivity(isConnected: false, isConnectedToWifi: false, isConnectedToMobile: false)
             }
+
+            self?.data.time = DateManager.shared.currentDate
+            guard let unwrappedData = self?.data else { return }
+            AlgolyticsSDK.shared.dataToSend.eventList.append(unwrappedData)
         }
         reachability.whenUnreachable = { [weak self] _ in
-            self?.data.connectivityInfo.append(Connectivity(isConnected: false, isConnectedToWifi: false, isConnectedToCellular: false))
+            self?.data.value = Connectivity(isConnected: false, isConnectedToWifi: false, isConnectedToMobile: false)
+
+            self?.data.time = DateManager.shared.currentDate
+            guard let unwrappedData = self?.data else { return }
+            AlgolyticsSDK.shared.dataToSend.eventList.append(unwrappedData)
         }
 
         do {
@@ -59,18 +67,18 @@ final class ConnectivityManager: BasicManagerType {
     }
 
     @objc private func sendData() {
-        let encoder = JSONEncoder()
+//        let encoder = JSONEncoder()
+//
+//            do {
+//                let jsonData = try encoder.encode(data)
+//
+//                AlgolyticsSDKService.shared.post(data: jsonData)
+//
+//            } catch {
+//                print(error.localizedDescription)
+//            }
 
-            do {
-                let jsonData = try encoder.encode(data)
-
-                AlgolyticsSDKService.shared.post(data: jsonData)
-
-            } catch {
-                print(error.localizedDescription)
-            }
-
-        data = ConnectivityData(connectivityInfo: [])
+//        data = ConnectivityData(connectivityInfo: [])
     }
 
     public func startGettingData() {

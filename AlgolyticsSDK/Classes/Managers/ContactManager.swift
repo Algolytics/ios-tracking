@@ -8,11 +8,11 @@
 import Foundation
 import Contacts
 
-struct Contact: Codable {
-    let eventType = "CONTACT_NUMBER"
-    var value: [Int]
-    let deviceInfo = DeviceManager()
-    let date = DateManager.shared.currentDate
+class Contact: Event {
+    let eventType = "CONTACTS_NUMBER"
+    var value: Int = 0
+//    let deviceInfo = DeviceManager()
+    var time = DateManager.shared.currentDate
 }
 
 final class ContactManager: BasicManagerType {
@@ -20,7 +20,7 @@ final class ContactManager: BasicManagerType {
     var sendingPoolingTime: Double
     var getDataTimer: Timer?
     var sendDataTimer: Timer?
-    var data: Contact = Contact(value: [])
+    var data: Contact = Contact()
     let contactStore = CNContactStore()
 
     init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
@@ -39,21 +39,24 @@ final class ContactManager: BasicManagerType {
             print("Error counting all contacts.\nError: \(error)")
         }
 
-        data.value.append(contactsCount)
+        data.value = contactsCount
+        data.time = DateManager.shared.currentDate
+
+        AlgolyticsSDK.shared.dataToSend.eventList.append(data)
     }
 
     @objc private func sendData() {
-        let encoder = JSONEncoder()
-
-        do {
-            let jsonData = try encoder.encode(data)
-
-            AlgolyticsSDKService.shared.post(data: jsonData)
-        } catch {
-            print(error.localizedDescription)
-        }
-
-        data = Contact(value: [])
+//        let encoder = JSONEncoder()
+//
+//        do {
+//            let jsonData = try encoder.encode(data)
+//
+//            AlgolyticsSDKService.shared.post(data: jsonData)
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+//
+//        data = Contact(value: [])
     }
 
     public func startGettingData() {

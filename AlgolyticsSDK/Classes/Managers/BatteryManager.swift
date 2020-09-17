@@ -9,9 +9,9 @@ import UIKit
 
 class BatteryData: Event {
     let eventType = "Battery"
-    var batteryInfo: Battery = Battery(batteryLevel: -1, isAcCharging: false)
+    var value: Battery = Battery(batteryLevel: -1, isAcCharging: false)
 //    let deviceInfo = DeviceManager()
-    let date = DateManager.shared.currentDate
+    var time = DateManager.shared.currentDate
 }
 
 struct Battery: Codable {
@@ -38,26 +38,29 @@ final class BatteryManager: BasicManagerType {
     @objc private func getData() {
         let battery = Battery(batteryLevel: UIDevice.current.batteryLevel * 100, isAcCharging: UIDevice.current.batteryState.rawValue == 2)
         
-        data.batteryInfo = battery
+        data.value = battery
+        data.time = DateManager.shared.currentDate
 
         AlgolyticsSDK.shared.dataToSend.eventList.append(data)
+
+        data = BatteryData()
     }
 
     @objc private func sendData() {
-        let encoder = JSONEncoder()
-
-        do {
-            let jsonData = try encoder.encode(data)
-            
-//            AlgolyticsSDKService.shared.dataToSend.append(jsonData)
-
-//            AlgolyticsSDKService.shared.post(data: jsonData)
-
-        } catch {
-            print(error.localizedDescription)
-        }
-
-        data = BatteryData()
+//        let encoder = JSONEncoder()
+//
+//        do {
+//            let jsonData = try encoder.encode(data)
+//            
+////            AlgolyticsSDKService.shared.dataToSend.append(jsonData)
+//
+////            AlgolyticsSDKService.shared.post(data: jsonData)
+//
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+//
+//        data = BatteryData()
     }
 
     public func startGettingData() {

@@ -8,11 +8,11 @@
 import Foundation
 import Photos
 
-struct PhotoData: Codable {
-    let eventType = "Photo"
-    var value: [Int]
-    let deviceInfo = DeviceManager()
-    let date = DateManager.shared.currentDate
+class PhotoData: Event {
+    let eventType = "NUMBER_OF_PHOTOS"
+    var value: Int = 0
+//    let deviceInfo = DeviceManager()
+    var time = DateManager.shared.currentDate
 }
 
 final class PhotoManager: BasicManagerType {
@@ -20,7 +20,7 @@ final class PhotoManager: BasicManagerType {
     var sendingPoolingTime: Double
     var getDataTimer: Timer?
     var sendDataTimer: Timer?
-    var data: PhotoData = PhotoData(value: [])
+    var data: PhotoData = PhotoData()
 
     init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
         self.gettingPoolingTime = gettingPoolingTime / 1000
@@ -30,21 +30,24 @@ final class PhotoManager: BasicManagerType {
     @objc private func getData() {
         let result = PHAsset.fetchAssets(with: .image, options: nil)
 
-        data.value.append(result.count)
+        data.time = DateManager.shared.currentDate
+        data.value = result.count
+
+        AlgolyticsSDK.shared.dataToSend.eventList.append(data)
     }
 
     @objc private func sendData() {
-        let encoder = JSONEncoder()
-
-        do {
-            let jsonData = try encoder.encode(data)
-
-            AlgolyticsSDKService.shared.post(data: jsonData)
-        } catch {
-            print(error.localizedDescription)
-        }
-
-        data = PhotoData(value: [])
+//        let encoder = JSONEncoder()
+//
+//        do {
+//            let jsonData = try encoder.encode(data)
+//
+//            AlgolyticsSDKService.shared.post(data: jsonData)
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+//
+//        data = PhotoData(value: [])
     }
 
     public func startGettingData() {

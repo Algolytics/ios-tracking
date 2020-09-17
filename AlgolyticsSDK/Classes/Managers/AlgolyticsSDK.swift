@@ -57,8 +57,8 @@ public final class AlgolyticsSDK {
         self.components.forEach { $0.startGettingData() }
     }
 
-    public func sendScreenName(name: String) {
-        screenEventsManager.saveScreenName(name: name)
+    public func sendScreenName(currentScreen: String, newScreen: String) {
+        screenEventsManager.saveScreenName(currentScreen: currentScreen, newScreen: newScreen)
     }
 
     public func startGettingClickEvents(for view: UIView) {

@@ -30,7 +30,7 @@ class ViewController: UIViewController {
 //        datePicker.addTarget(AlgolyticsSDK.shared, action: #selector(AlgolyticsSDK.shared.getDatePickerData(_:)), for: .valueChanged)
 
           //ToolBar
-        AlgolyticsSDK.shared.sendScreenName(name: "test")
+        AlgolyticsSDK.shared.sendScreenName(currentScreen: "currentScreen", newScreen: "newScreen")
 
         textView.delegate = self
 
