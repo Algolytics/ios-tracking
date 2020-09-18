@@ -10,9 +10,8 @@ import Reachability
 import Network
 
 class ConnectivityData: Event {
-    let eventType = "Connectivity"
+    let eventType = "CONNECTION_INFO"
     var value: Connectivity = Connectivity(isConnected: false, isConnectedToWifi: false, isConnectedToMobile: false)
-//    let deviceInfo = DeviceManager()
     var time = DateManager.shared.currentDate
 }
 
@@ -24,15 +23,12 @@ struct Connectivity: Codable {
 
 final class ConnectivityManager: BasicManagerType {
     var gettingPoolingTime: Double
-    var sendingPoolingTime: Double
     var getDataTimer: Timer?
-    var sendDataTimer: Timer?
     var data: ConnectivityData = ConnectivityData()
     let reachability = try! Reachability()
 
-    init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
+    init(gettingPoolingTime: Double) {
         self.gettingPoolingTime = gettingPoolingTime / 1000
-        self.sendingPoolingTime = sendingPoolingTime / 1000
 
         reachability.whenReachable = { [weak self] reachability in
             if reachability.connection == .wifi {
@@ -62,34 +58,12 @@ final class ConnectivityManager: BasicManagerType {
         }
     }
 
-    @objc private func getData() {
-
-    }
-
-    @objc private func sendData() {
-//        let encoder = JSONEncoder()
-//
-//            do {
-//                let jsonData = try encoder.encode(data)
-//
-//                AlgolyticsSDKService.shared.post(data: jsonData)
-//
-//            } catch {
-//                print(error.localizedDescription)
-//            }
-
-//        data = ConnectivityData(connectivityInfo: [])
-    }
-
     public func startGettingData() {
-        sendDataTimer = Timer.scheduledTimer(timeInterval: sendingPoolingTime, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
+
     }
 
     public func stopGettingData() {
         getDataTimer?.invalidate()
         getDataTimer = nil
-
-        sendDataTimer?.invalidate()
-        sendDataTimer = nil
     }
 }

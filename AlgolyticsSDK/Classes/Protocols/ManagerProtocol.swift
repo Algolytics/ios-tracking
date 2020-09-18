@@ -8,12 +8,10 @@
 import Foundation
 
 protocol BasicManagerType {
-    init(gettingPoolingTime: Double, sendingPoolingTime: Double)
+    init(gettingPoolingTime: Double)
 
     var getDataTimer: Timer? { get }
-    var sendDataTimer: Timer? { get }
     var gettingPoolingTime: Double { get }
-    var sendingPoolingTime: Double { get }
 
     func startGettingData()
     func stopGettingData()

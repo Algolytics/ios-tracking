@@ -10,7 +10,6 @@ import Foundation
 class ClickEvent: Event {
     var eventType: String = "CLICK_EVENT"
     var value: Click
-//    let deviceInfo = DeviceManager()
     var time = DateManager.shared.currentDate
 
     init(click: Click, eventType: String, time: String = DateManager.shared.currentDate) {

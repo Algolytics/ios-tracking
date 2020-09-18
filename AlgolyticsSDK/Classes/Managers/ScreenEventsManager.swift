@@ -11,7 +11,6 @@ struct ScreenEventData: Codable {
     let eventType: String = "SCREEN_CHANGED"
     let currentScreen: String
     let newScreen: String
-//    let deviceInfo = DeviceManager()
     let date = DateManager.shared.currentDate
 }
 

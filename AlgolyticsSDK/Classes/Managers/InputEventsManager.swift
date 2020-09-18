@@ -10,7 +10,6 @@ import Foundation
 struct InputEventData: Codable {
     let eventType = "TEXT_INSERTED"
     var value: InputData
-//    let deviceInfo = DeviceManager()
     let time = DateManager.shared.currentDate
 }
 

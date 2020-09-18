@@ -20,9 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AlgolyticsSDK.shared.initWith(url: "https://demo.scoring.one/api/scenario/code/remote/score?name=iOSTracking&key=da1ae9dc-6909-4c6a-8f7f-3fa059a7aa83",                                  apiKey: "api-key",
                                       apiPoolingTime: 5000,
                                       components: [
-//                                        .battery(poolingTime: 1000),
-                                                   .accelerometer(poolingTime: 1000)
-//                                        .calendar(poolingTime: 1000),
+                                        .battery(poolingTime: 5000),
+//                                                   .accelerometer(poolingTime: 5000),
+                                        .calendar(poolingTime: 5000),
 
 //                                                   BatteryManager(),
 //                                                   AccelerometerManager(),

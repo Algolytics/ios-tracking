@@ -8,9 +8,8 @@
 import UIKit
 
 class BatteryData: Event {
-    let eventType = "Battery"
+    let eventType = "BATTERY"
     var value: Battery = Battery(batteryLevel: -1, isAcCharging: false)
-//    let deviceInfo = DeviceManager()
     var time = DateManager.shared.currentDate
 }
 
@@ -25,14 +24,11 @@ struct Battery: Codable {
 
 final class BatteryManager: BasicManagerType {
     var gettingPoolingTime: Double
-    var sendingPoolingTime: Double
     var getDataTimer: Timer?
-    var sendDataTimer: Timer?
     var data: BatteryData = BatteryData()
 
-    init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
+    init(gettingPoolingTime: Double) {
         self.gettingPoolingTime = gettingPoolingTime / 1000
-        self.sendingPoolingTime = sendingPoolingTime / 1000
     }
 
     @objc private func getData() {
@@ -46,37 +42,15 @@ final class BatteryManager: BasicManagerType {
         data = BatteryData()
     }
 
-    @objc private func sendData() {
-//        let encoder = JSONEncoder()
-//
-//        do {
-//            let jsonData = try encoder.encode(data)
-//            
-////            AlgolyticsSDKService.shared.dataToSend.append(jsonData)
-//
-////            AlgolyticsSDKService.shared.post(data: jsonData)
-//
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-//
-//        data = BatteryData()
-    }
-
     public func startGettingData() {
         UIDevice.current.isBatteryMonitoringEnabled = true
 
         getDataTimer = Timer.scheduledTimer(timeInterval: gettingPoolingTime, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
         getDataTimer?.fire()
-
-        sendDataTimer = Timer.scheduledTimer(timeInterval: sendingPoolingTime, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
     }
 
     public func stopGettingData() {
         getDataTimer?.invalidate()
         getDataTimer = nil
-
-        sendDataTimer?.invalidate()
-        sendDataTimer = nil
     }
 }

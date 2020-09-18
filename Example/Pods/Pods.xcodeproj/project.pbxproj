@@ -9,7 +9,8 @@
 /* Begin PBXBuildFile section */
 		13142B9D8600F8FBC4B3D12838967036 /* WifiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556B0CA91D8469AB13BDCAB62C385929 /* WifiManager.swift */; };
 		2209A22024939EB60039F5F6 /* AlgolyticsSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2209A21F24939EB60039F5F6 /* AlgolyticsSDK.swift */; };
-		225833AD2499EE6100F4C9E7 /* AlgolyticsSDKService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225833AC2499EE6100F4C9E7 /* AlgolyticsSDKService.swift */; };
+		22DFD2AC251488C600316B86 /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DFD2AB251488C600316B86 /* PermissionsManager.swift */; };
+		22DFD2AF25148CE900316B86 /* AlgolyticsSDKService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DFD2AE25148CE900316B86 /* AlgolyticsSDKService.swift */; };
 		2CF8596196951C21DB0A0680FB9C46E7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F09A4723F06A242B0FA6447B7FEEFF90 /* SystemConfiguration.framework */; };
 		3113105102478DA29F9960824F8DC7B2 /* ManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2349585190605F86DAAA10C8C76738C1 /* ManagerProtocol.swift */; };
 		34F2E31132D3BFFEE2CD63567AF37E6A /* BatteryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D365A629F8240A04F157BD828B26ED /* BatteryManager.swift */; };
@@ -70,7 +71,8 @@
 		1CA8F88DFD5F8D7EB0514B0BF33E4031 /* AlgolyticsSDK-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AlgolyticsSDK-umbrella.h"; sourceTree = "<group>"; };
 		21B03CA622E690725A6626C088E1D09F /* Reachability.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Reachability.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2209A21F24939EB60039F5F6 /* AlgolyticsSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlgolyticsSDK.swift; sourceTree = "<group>"; };
-		225833AC2499EE6100F4C9E7 /* AlgolyticsSDKService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AlgolyticsSDKService.swift; path = ../AlgolyticsSDK/Classes/Network/AlgolyticsSDKService.swift; sourceTree = "<group>"; };
+		22DFD2AB251488C600316B86 /* PermissionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsManager.swift; sourceTree = "<group>"; };
+		22DFD2AE25148CE900316B86 /* AlgolyticsSDKService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgolyticsSDKService.swift; sourceTree = "<group>"; };
 		2349585190605F86DAAA10C8C76738C1 /* ManagerProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ManagerProtocol.swift; sourceTree = "<group>"; };
 		243916291A44CE9CE6B7B540A8374EE7 /* ReachabilitySwift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ReachabilitySwift.xcconfig; sourceTree = "<group>"; };
 		27E8235949AE72F9E3D25D0737874AA8 /* AlgolyticsSDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = AlgolyticsSDK.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -154,6 +156,7 @@
 				F9FAAE37565F61D1A519B1868BD9AE4C /* ContactManager.swift */,
 				9170EA54A749C1559837F637CAAD55BA /* InputEventsManager.swift */,
 				D4FC1E4123C3F5305F94CF0C8217E9FD /* LocationManager.swift */,
+				22DFD2AB251488C600316B86 /* PermissionsManager.swift */,
 				620219C08272A68476B55705C85D1391 /* PhotoManager.swift */,
 				EA0A6F3C01FAC4A56B7598000F3ACB82 /* ScreenEventsManager.swift */,
 				556B0CA91D8469AB13BDCAB62C385929 /* WifiManager.swift */,
@@ -163,10 +166,10 @@
 			path = AlgolyticsSDK/Classes/Managers;
 			sourceTree = "<group>";
 		};
-		225833AB2499EE1100F4C9E7 /* Network */ = {
+		22DFD2AD25148CDA00316B86 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				225833AC2499EE6100F4C9E7 /* AlgolyticsSDKService.swift */,
+				22DFD2AE25148CE900316B86 /* AlgolyticsSDKService.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -321,7 +324,7 @@
 		FDED16D105A1353C5F479AADEEB7E97B /* AlgolyticsSDK */ = {
 			isa = PBXGroup;
 			children = (
-				225833AB2499EE1100F4C9E7 /* Network */,
+				22DFD2AD25148CDA00316B86 /* Network */,
 				70B0613F7EDA7084499DA9ACEBD97BC7 /* Extensions */,
 				133A65666690B4EC84C34845D6D542B8 /* Managers */,
 				64689654ED0A36E425E414AAB611E8B4 /* Pod */,
@@ -502,7 +505,6 @@
 				E836B0A0987B99006F921F1EFB155EA8 /* AccelerometerManager.swift in Sources */,
 				DD95C477E09E7627B9731670F5FA0F29 /* AlgolyticsSDK-dummy.m in Sources */,
 				34F2E31132D3BFFEE2CD63567AF37E6A /* BatteryManager.swift in Sources */,
-				225833AD2499EE6100F4C9E7 /* AlgolyticsSDKService.swift in Sources */,
 				AF2C7F40CD9273C60AC11E492B5D7A1B /* CalendarManager.swift in Sources */,
 				2209A22024939EB60039F5F6 /* AlgolyticsSDK.swift in Sources */,
 				89A4F25454B70642B0C67B68E2154EA0 /* ClickEventsManager.swift in Sources */,
@@ -514,6 +516,8 @@
 				C4ABADAA9C8947816D7AD43A99A7CDD6 /* PhotoManager.swift in Sources */,
 				5567EF6E7AAC392C1D742083D514DD7E /* ScreenEventsManager.swift in Sources */,
 				7E6B81D04D62A2C3C0A31331FE5CF8E6 /* UIView+Subviews.swift in Sources */,
+				22DFD2AC251488C600316B86 /* PermissionsManager.swift in Sources */,
+				22DFD2AF25148CE900316B86 /* AlgolyticsSDKService.swift in Sources */,
 				13142B9D8600F8FBC4B3D12838967036 /* WifiManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,9 +9,8 @@ import Foundation
 import CoreLocation
 
 class LocationData: Event {
-    let eventType = "Location"
+    let eventType = "LOCATION"
     var value: Location = Location(latitude: 0, longitude: 0)
-//    let deviceInfo = DeviceManager()
     var time = DateManager.shared.currentDate
 }
 
@@ -22,15 +21,12 @@ struct Location: Codable {
 
 final class LocationManager: NSObject, BasicManagerType {
     var gettingPoolingTime: Double
-    var sendingPoolingTime: Double
     var getDataTimer: Timer?
-    var sendDataTimer: Timer?
     var data: LocationData = LocationData()
     let locationManager = CLLocationManager()
 
-    init(gettingPoolingTime: Double, sendingPoolingTime: Double) {
+    init(gettingPoolingTime: Double) {
         self.gettingPoolingTime = gettingPoolingTime / 1000
-        self.sendingPoolingTime = sendingPoolingTime / 1000
 
         self.locationManager.requestWhenInUseAuthorization()
     }
@@ -51,33 +47,14 @@ final class LocationManager: NSObject, BasicManagerType {
         AlgolyticsSDK.shared.dataToSend.eventList.append(data)
     }
 
-    @objc private func sendData() {
-//        let encoder = JSONEncoder()
-//
-//        do {
-//            let jsonData = try encoder.encode(data)
-//
-//            AlgolyticsSDKService.shared.post(data: jsonData)
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-//
-//        data = LocationData(value: [])
-    }
-
     public func startGettingData() {
         getDataTimer = Timer.scheduledTimer(timeInterval: gettingPoolingTime, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
         getDataTimer?.fire()
-
-        sendDataTimer = Timer.scheduledTimer(timeInterval: sendingPoolingTime, target: self, selector: #selector(sendData), userInfo: nil, repeats: true)
     }
 
     public func stopGettingData() {
         getDataTimer?.invalidate()
         getDataTimer = nil
-
-        sendDataTimer?.invalidate()
-        sendDataTimer = nil
     }
 }
 
