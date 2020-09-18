@@ -40,7 +40,7 @@ final class CalendarManager: BasicManagerType {
 
         var calendarEvents: [Calendar] = []
         for calendar in calendars {
-            let oneMonthAgo = Date(timeIntervalSinceNow: -30*24*3600)
+            let oneMonthAgo = Date(timeIntervalSinceNow: -30*24*3600) //-60*60*24*180
             let oneMonthAfter = Date(timeIntervalSinceNow: +30*24*3600)
 
             let predicate = eventStore.predicateForEvents(withStart: oneMonthAgo, end: oneMonthAfter, calendars: [calendar])

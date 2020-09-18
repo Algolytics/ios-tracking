@@ -9,7 +9,7 @@ import UIKit
 
 public final class AlgolyticsSDK {
     public enum AlgolyticsComponentType {
-        case accelerometer(poolingTime: Double = 30000.0)
+        case accelerometer(poolingTime: Double = 30000.0, minDifference: Double = 0.0)
         case battery(poolingTime: Double = 30000.0)
         case calendar(poolingTime: Double = 30000.0)
         case connectivity(poolingTime: Double = 30000.0)
@@ -33,8 +33,10 @@ public final class AlgolyticsSDK {
 
         components.forEach {
             switch $0 {
-            case .accelerometer(let poolingTime):
-                self.components.append(AccelerometerManager(gettingPoolingTime: poolingTime, sendingPoolingTime: apiPoolingTime))
+            case .accelerometer(let poolingTime, let minDifference):
+                let accelerometerManager = AccelerometerManager(gettingPoolingTime: poolingTime, sendingPoolingTime: apiPoolingTime)
+                accelerometerManager.minDifference = minDifference
+                self.components.append(accelerometerManager)
             case .battery(let poolingTime):
                 self.components.append(BatteryManager(gettingPoolingTime: poolingTime, sendingPoolingTime: apiPoolingTime))
             case .calendar(let poolingTime):
@@ -87,5 +89,6 @@ public final class AlgolyticsSDK {
 
     @objc private func sendData() {
         AlgolyticsSDKService.shared.post(data: Data(), dataToSend: dataToSend)
+        dataToSend = EventData(eventList: [])
     }
 }

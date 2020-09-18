@@ -25,6 +25,7 @@ struct Accelerometer: Codable {
 final class AccelerometerManager: BasicManagerType {
     var gettingPoolingTime: Double
     var sendingPoolingTime: Double
+    var minDifference: Double = 0.0
     var getDataTimer: Timer?
     var sendDataTimer: Timer?
     var data: AccelerometerData = AccelerometerData()
@@ -38,14 +39,26 @@ final class AccelerometerManager: BasicManagerType {
 
     @objc private func getData() {
         guard let x = motionManager.accelerometerData?.acceleration.x, let y = motionManager.accelerometerData?.acceleration.y, let z = motionManager.accelerometerData?.acceleration.z else { return }
-        
+        let minDifference = 0.1
         let accelerometer = Accelerometer(x: x, y: y, z: z)
-        data.value.append(accelerometer)
-        data.time = DateManager.shared.currentDate
+//        print("before if x \(accelerometer.x)")
+        guard let lastAccelerometer = data.value.last else {
+            data.value.append(accelerometer)
+            return
+        }
 
-        AlgolyticsSDK.shared.dataToSend.eventList.append(data)
+        if abs(accelerometer.x - lastAccelerometer.x) >= minDifference ||
+            abs(accelerometer.y - lastAccelerometer.y) >= minDifference ||
+            abs(accelerometer.z - lastAccelerometer.z) >= minDifference {
+            print("last x \(lastAccelerometer.x)")
+            print("current x \(accelerometer.x)")
+            data.value.append(accelerometer)
+//            data.time = DateManager.shared.currentDate
 
-        data = AccelerometerData()
+            AlgolyticsSDK.shared.dataToSend.eventList.append(data)
+
+//            data = AccelerometerData()
+        }
     }
 
     @objc private func sendData() {
