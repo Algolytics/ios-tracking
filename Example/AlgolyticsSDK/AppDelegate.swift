@@ -21,17 +21,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                       apiPoolingTime: 5000,
                                       components: [
                                         .battery(poolingTime: 5000),
-//                                                   .accelerometer(poolingTime: 5000),
+                                        .accelerometer(poolingTime: 5000),
                                         .calendar(poolingTime: 5000),
-
-//                                                   BatteryManager(),
-//                                                   AccelerometerManager(),
-//                                                   CalendarManager(),
-//                                                   ContactManager(),
-//                                                   LocationManager(),
-//                                                   PhotoManager(),
-//                                                   WifiManager(),
-//                                                   ConnectivityManager()
+                                        .connectivity(poolingTime: 5000),
+                                        .contact(poolingTime: 5000),
+                                        .location(poolingTime: 5000),
+                                        .photo(poolingTime: 5000),
+                                        .wifi(poolingTime: 5000)
         ])
 
         return true

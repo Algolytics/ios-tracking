@@ -40,15 +40,11 @@ final class ConnectivityManager: BasicManagerType {
             }
 
             self?.data.time = DateManager.shared.currentDate
-            guard let unwrappedData = self?.data else { return }
-            AlgolyticsSDK.shared.dataToSend.eventList.append(unwrappedData)
         }
         reachability.whenUnreachable = { [weak self] _ in
             self?.data.value = Connectivity(isConnected: false, isConnectedToWifi: false, isConnectedToMobile: false)
 
             self?.data.time = DateManager.shared.currentDate
-            guard let unwrappedData = self?.data else { return }
-            AlgolyticsSDK.shared.dataToSend.eventList.append(unwrappedData)
         }
 
         do {
@@ -58,8 +54,13 @@ final class ConnectivityManager: BasicManagerType {
         }
     }
 
-    public func startGettingData() {
+    @objc private func getData() {
+        AlgolyticsSDK.shared.dataToSend.eventList.append(data)
+    }
 
+    public func startGettingData() {
+        getDataTimer = Timer.scheduledTimer(timeInterval: gettingPoolingTime, target: self, selector: #selector(getData), userInfo: nil, repeats: true)
+        getDataTimer?.fire()
     }
 
     public func stopGettingData() {

@@ -29,15 +29,13 @@ class PermissionsManager {
             noPermissions.append("CONTACTS_NUMBER")
         }
 
-        if CLLocationManager.authorizationStatus() != .authorizedAlways || CLLocationManager.authorizationStatus() != .authorizedWhenInUse {
+        if CLLocationManager.authorizationStatus() != .authorizedAlways && CLLocationManager.authorizationStatus() != .authorizedWhenInUse {
             noPermissions.append("LOCATION")
         }
 
         if PHPhotoLibrary.authorizationStatus() != .authorized {
             noPermissions.append("NUMBER_OF_PHOTOS")
         }
-
-        print("no permission \(noPermissions)")
 
         return noPermissions
     }

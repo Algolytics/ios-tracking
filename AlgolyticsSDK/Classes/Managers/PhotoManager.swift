@@ -34,10 +34,12 @@ final class PhotoManager: BasicManagerType {
 
     public func startGettingData() {
         PHPhotoLibrary.requestAuthorization { (status) in
-            DispatchQueue.main.async { [weak self] in
-                guard let strongSelf = self else { return }
-                strongSelf.getDataTimer = Timer.scheduledTimer(timeInterval: strongSelf.gettingPoolingTime, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
-                strongSelf.getDataTimer?.fire()
+            if status == .authorized {
+                DispatchQueue.main.async { [weak self] in
+                    guard let strongSelf = self else { return }
+                    strongSelf.getDataTimer = Timer.scheduledTimer(timeInterval: strongSelf.gettingPoolingTime, target: strongSelf, selector: #selector(strongSelf.getData), userInfo: nil, repeats: true)
+                    strongSelf.getDataTimer?.fire()
+                }
             }
         }
     }
