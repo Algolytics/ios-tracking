@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AlgolyticsSDK'
-  s.version          = '0.1.4'
+  s.version          = '0.1.6'
   s.summary          = 'A short description of AlgolyticsSDK.'
 
 # This description is used to generate tags and improve search results.
@@ -25,7 +25,7 @@ TODO: Add long description of the pod here.
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Mateusz Mirkowski' => 'mateusz.mirkowski@emergeconsulting.pl' }
-  s.source           = { :git => 'https://mireczek@bitbucket.org/HubertEmerge1/sdk-ios-lib.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://mireczek@bitbucket.org/EmergeConsulting/sdk-ios-library.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '9.0'
