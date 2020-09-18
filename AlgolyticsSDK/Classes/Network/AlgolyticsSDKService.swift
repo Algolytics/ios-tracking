@@ -5,12 +5,18 @@
 //  Created by Mateusz Mirkowski on 17/06/2020.
 //
 
-import Foundation
+import UIKit
+
+struct Resolution: Codable {
+    let x: Int
+    let y: Int
+}
 
 struct DeviceManager: Codable {
     let deviceType = "SMARTPHONE"
     let deviceModel = UIDevice.current.name
     let deviceManufacturer = "Apple"
+    let deviceResolution = Resolution(x: Int(UIScreen.main.bounds.width), y: Int(UIScreen.main.bounds.height))
     let deviceId = UIDevice.current.identifierForVendor?.description ?? ""
     let os = UIDevice.current.systemName
     let osVersion = UIDevice.current.systemVersion
