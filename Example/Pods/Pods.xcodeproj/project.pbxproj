@@ -10,7 +10,7 @@
 		13142B9D8600F8FBC4B3D12838967036 /* WifiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556B0CA91D8469AB13BDCAB62C385929 /* WifiManager.swift */; };
 		2209A22024939EB60039F5F6 /* AlgolyticsSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2209A21F24939EB60039F5F6 /* AlgolyticsSDK.swift */; };
 		22DFD2AC251488C600316B86 /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DFD2AB251488C600316B86 /* PermissionsManager.swift */; };
-		22DFD2AF25148CE900316B86 /* AlgolyticsSDKService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DFD2AE25148CE900316B86 /* AlgolyticsSDKService.swift */; };
+		22DFD2B12514ACDE00316B86 /* AlgolyticsSDKService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DFD2B02514ACDD00316B86 /* AlgolyticsSDKService.swift */; };
 		2CF8596196951C21DB0A0680FB9C46E7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F09A4723F06A242B0FA6447B7FEEFF90 /* SystemConfiguration.framework */; };
 		3113105102478DA29F9960824F8DC7B2 /* ManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2349585190605F86DAAA10C8C76738C1 /* ManagerProtocol.swift */; };
 		34F2E31132D3BFFEE2CD63567AF37E6A /* BatteryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D365A629F8240A04F157BD828B26ED /* BatteryManager.swift */; };
@@ -72,7 +72,7 @@
 		21B03CA622E690725A6626C088E1D09F /* Reachability.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Reachability.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2209A21F24939EB60039F5F6 /* AlgolyticsSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlgolyticsSDK.swift; sourceTree = "<group>"; };
 		22DFD2AB251488C600316B86 /* PermissionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsManager.swift; sourceTree = "<group>"; };
-		22DFD2AE25148CE900316B86 /* AlgolyticsSDKService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgolyticsSDKService.swift; sourceTree = "<group>"; };
+		22DFD2B02514ACDD00316B86 /* AlgolyticsSDKService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlgolyticsSDKService.swift; path = ../AlgolyticsSDK/Classes/Network/AlgolyticsSDKService.swift; sourceTree = "<group>"; };
 		2349585190605F86DAAA10C8C76738C1 /* ManagerProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ManagerProtocol.swift; sourceTree = "<group>"; };
 		243916291A44CE9CE6B7B540A8374EE7 /* ReachabilitySwift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ReachabilitySwift.xcconfig; sourceTree = "<group>"; };
 		27E8235949AE72F9E3D25D0737874AA8 /* AlgolyticsSDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = AlgolyticsSDK.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -169,7 +169,7 @@
 		22DFD2AD25148CDA00316B86 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				22DFD2AE25148CE900316B86 /* AlgolyticsSDKService.swift */,
+				22DFD2B02514ACDD00316B86 /* AlgolyticsSDKService.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -513,11 +513,11 @@
 				5C01BA83A60F683D0B14B616DDB589AB /* InputEventsManager.swift in Sources */,
 				CBC4876DA3EEECACF4D169C898724A77 /* LocationManager.swift in Sources */,
 				3113105102478DA29F9960824F8DC7B2 /* ManagerProtocol.swift in Sources */,
+				22DFD2B12514ACDE00316B86 /* AlgolyticsSDKService.swift in Sources */,
 				C4ABADAA9C8947816D7AD43A99A7CDD6 /* PhotoManager.swift in Sources */,
 				5567EF6E7AAC392C1D742083D514DD7E /* ScreenEventsManager.swift in Sources */,
 				7E6B81D04D62A2C3C0A31331FE5CF8E6 /* UIView+Subviews.swift in Sources */,
 				22DFD2AC251488C600316B86 /* PermissionsManager.swift in Sources */,
-				22DFD2AF25148CE900316B86 /* AlgolyticsSDKService.swift in Sources */,
 				13142B9D8600F8FBC4B3D12838967036 /* WifiManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
