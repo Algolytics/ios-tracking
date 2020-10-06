@@ -83,14 +83,8 @@ class ClickEventsManager: BasicAspectType {
 
     func sendData(name: String, value: String, eventType: String = "CLICK_EVENT") {
         let event = ClickEvent(click: Click(name: name, value: value), eventType: eventType)
-        let encoder = JSONEncoder()
 
-        do {
-            let jsonData = try encoder.encode(event)
+        AlgolyticsSDK.shared.dataToSend.eventList.append(event)
 
-            AlgolyticsSDKService.shared.post(data: jsonData)
-        } catch {
-            print(error.localizedDescription)
-        }
     }
 }

@@ -92,13 +92,15 @@ public final class AlgolyticsSDK {
     }
 
     @objc private func sendAllEvents() {
-        let encoder = JSONEncoder()
-        do {
-            let jsonData = try encoder.encode(dataToSend)
-            AlgolyticsSDKService.shared.post(data: jsonData)
-            dataToSend = EventData(eventList: [])
-        } catch {
-            print(error.localizedDescription)
+        if dataToSend.eventList.count > 0 {
+            let encoder = JSONEncoder()
+            do {
+                let jsonData = try encoder.encode(dataToSend)
+                AlgolyticsSDKService.shared.post(data: jsonData)
+                dataToSend = EventData(eventList: [])
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
 }

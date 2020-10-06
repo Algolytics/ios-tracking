@@ -47,7 +47,6 @@ class PermissionsManager {
 
         do {
             let jsonData = try encoder.encode(permissions)
-
             AlgolyticsSDKService.shared.post(data: jsonData)
         } catch {
             print(error.localizedDescription)

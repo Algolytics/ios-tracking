@@ -7,10 +7,22 @@
 
 import Foundation
 
-struct InputEventData: Codable {
-    let eventType = "TEXT_INSERTED"
+class InputEventData: Event {
+    var eventType = "TEXT_INSERTED"
     var value: InputData
-    let time = DateManager.shared.currentDate
+    var time = DateManager.shared.currentDate
+
+    init(value: InputData, eventType: String = "TEXT_INSERTED", time: String = DateManager.shared.currentDate) {
+        self.value = value
+        self.eventType = eventType
+        self.time = time
+
+        super.init()
+    }
+
+    required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
 }
 
 struct InputData: Codable {
@@ -46,16 +58,9 @@ class InputEventsManager: BasicAspectType {
     }
 
     private func sendInputEvent(name: String, value: String, dwellTime: TimeInterval, flightTime: TimeInterval) {
-        let data = InputEventData(value: InputData(inputName: name, value: value, dwellTime: dwellTime, flightTime: flightTime))
-        let encoder = JSONEncoder()
+        let event = InputEventData(value: InputData(inputName: name, value: value, dwellTime: dwellTime, flightTime: flightTime))
 
-        do {
-            let jsonData = try encoder.encode(data)
-            
-            AlgolyticsSDKService.shared.post(data: jsonData)
-        } catch {
-            print(error.localizedDescription)
-        }
+        AlgolyticsSDK.shared.dataToSend.eventList.append(event)
     }
 }
 
