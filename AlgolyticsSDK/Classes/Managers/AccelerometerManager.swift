@@ -8,7 +8,7 @@
 import Foundation
 import CoreMotion
 
-class AccelerometerData: Event {
+class AccelerometerData: Event, Codable {
     let eventType = "ACCELEROMETER"
     var value: [Accelerometer] = []
     var time = DateManager.shared.currentDate

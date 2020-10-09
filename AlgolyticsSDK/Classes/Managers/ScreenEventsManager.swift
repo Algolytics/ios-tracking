@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ScreenEventData: Event {
+class ScreenEventData: Event, Codable {
     let eventType: String = "SCREEN_CHANGED"
     let currentScreen: String
     let newScreen: String
@@ -16,11 +16,6 @@ class ScreenEventData: Event {
     init(currentScreen: String, newScreen: String, eventType: String = "SCREEN_CHANGED", date: String = DateManager.shared.currentDate) {
         self.currentScreen = currentScreen
         self.newScreen = newScreen
-        super.init()
-    }
-
-    required init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
     }
 }
 

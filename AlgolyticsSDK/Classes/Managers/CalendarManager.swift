@@ -8,7 +8,7 @@
 import Foundation
 import EventKit
 
-class CalendarData: Event {
+class CalendarData: Event, Codable {
     let eventType = "CALLENDAR_EVENTS"
     var value: [Calendar] = []
     var time = DateManager.shared.currentDate

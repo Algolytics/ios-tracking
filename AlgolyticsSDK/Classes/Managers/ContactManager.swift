@@ -8,7 +8,7 @@
 import Foundation
 import Contacts
 
-class Contact: Event {
+class Contact: Event, Codable {
     let eventType = "CONTACTS_NUMBER"
     var value: Int = 0
     var time = DateManager.shared.currentDate

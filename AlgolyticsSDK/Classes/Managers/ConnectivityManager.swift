@@ -9,7 +9,7 @@ import Foundation
 import Reachability
 import Network
 
-class ConnectivityData: Event {
+class ConnectivityData: Event, Codable {
     let eventType = "CONNECTION_INFO"
     var value: Connectivity = Connectivity(isConnected: false, isConnectedToWifi: false, isConnectedToMobile: false)
     var time = DateManager.shared.currentDate

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ClickEvent: Event {
+class ClickEvent: Event, Codable {
     var eventType: String = "CLICK_EVENT"
     var value: Click
     var time = DateManager.shared.currentDate
@@ -16,12 +16,6 @@ class ClickEvent: Event {
         self.value = click
         self.eventType = eventType
         self.time = time
-        
-        super.init()
-    }
-
-    required init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
     }
 }
 

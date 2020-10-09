@@ -7,7 +7,7 @@
 
 import Foundation
 
-class InputEventData: Event {
+class InputEventData: Event, Codable {
     var eventType = "TEXT_INSERTED"
     var value: InputData
     var time = DateManager.shared.currentDate
@@ -16,12 +16,6 @@ class InputEventData: Event {
         self.value = value
         self.eventType = eventType
         self.time = time
-
-        super.init()
-    }
-
-    required init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
     }
 }
 

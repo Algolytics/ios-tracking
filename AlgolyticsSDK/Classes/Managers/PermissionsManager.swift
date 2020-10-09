@@ -44,7 +44,7 @@ class PermissionsManager {
         var permissions = Permission()
         permissions.value = getAllNoPermissions()
         let encoder = JSONEncoder()
-
+        
         do {
             let jsonData = try encoder.encode(permissions)
             AlgolyticsSDKService.shared.post(data: jsonData)

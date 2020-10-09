@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BatteryData: Event {
+class BatteryData: Event, Codable {
     let eventType = "BATTERY"
     var value: Battery = Battery(batteryLevel: -1, isAcCharging: false)
     var time = DateManager.shared.currentDate

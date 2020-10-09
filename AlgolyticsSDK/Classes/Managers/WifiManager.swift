@@ -8,7 +8,7 @@
 import Foundation
 import SystemConfiguration.CaptiveNetwork
 
-class WifiData: Event {
+class WifiData: Event, Codable {
     let eventType = "WIFI"
     var value: Wifi = Wifi(name: "")
     var time = DateManager.shared.currentDate

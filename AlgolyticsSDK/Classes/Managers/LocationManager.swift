@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-class LocationData: Event {
+class LocationData: Event, Codable {
     let eventType = "LOCATION"
     var value: Location = Location(latitude: 0, longitude: 0)
     var time = DateManager.shared.currentDate

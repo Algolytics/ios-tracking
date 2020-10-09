@@ -8,7 +8,7 @@
 import Foundation
 import Photos
 
-class PhotoData: Event {
+class PhotoData: Event, Codable {
     let eventType = "NUMBER_OF_PHOTOS"
     var value: Int = 0
     var time = DateManager.shared.currentDate
