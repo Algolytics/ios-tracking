@@ -31,11 +31,11 @@ class DateManager {
         return formatter
     }()
 
-    lazy var currentDate: String = {
+    var currentDate: String {
         let now = Date()
         let dateString = dateFormatter.string(from:now)
         return dateString
-    }()
+    }
 }
 
 protocol Event {}
@@ -49,13 +49,14 @@ struct EventData: Codable {
     }
 
     private enum CodingKeys: String, CodingKey {
-        case eventList
+        case eventList, phoneInformation
     }
 
     func encode(to encoder: Encoder) throws {
         let wrappers = eventList.map { EventWrapper($0) }
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(wrappers, forKey: .eventList)
+        try container.encode(phoneInformation, forKey: .phoneInformation)
     }
 
     init(from decoder: Decoder) throws {

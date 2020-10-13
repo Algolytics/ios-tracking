@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ScreenEventData: Event, Codable {
+class ScreenEventData: Event, Codable  {
     let eventType: String = "SCREEN_CHANGED"
     let currentScreen: String
     let newScreen: String
