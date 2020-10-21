@@ -36,20 +36,23 @@ final class AccelerometerManager: BasicManagerType {
 
     @objc private func getData() {
         guard let x = motionManager.accelerometerData?.acceleration.x, let y = motionManager.accelerometerData?.acceleration.y, let z = motionManager.accelerometerData?.acceleration.z else { return }
-        let minDifference = 0.1
+
         let accelerometer = Accelerometer(x: x, y: y, z: z)
-        
+
         guard let lastAccelerometer = data.value.last else {
             data.value.append(accelerometer)
+            AlgolyticsSDK.shared.dataToSend.eventList.append(data)
             return
         }
 
         if abs(accelerometer.x - lastAccelerometer.x) >= minDifference ||
             abs(accelerometer.y - lastAccelerometer.y) >= minDifference ||
             abs(accelerometer.z - lastAccelerometer.z) >= minDifference {
+            data = AccelerometerData()
             data.value.append(accelerometer)
 
             AlgolyticsSDK.shared.dataToSend.eventList.append(data)
+            data = AccelerometerData()
         }
     }
 
